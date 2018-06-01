@@ -1,0 +1,137 @@
+@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/mixins";
+
+
+.hide {display: none}
+
+/* add person container */
+.add-person {
+  .item {
+    margin: 5px;
+  }
+  .grow {
+    flex-grow: 1;
+    input {
+      width: 100%;
+    }
+  }
+
+  .checkbox {
+    white-space: nowrap;
+    margin-top: .10rem;
+  }
+
+  button {
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    background-color: white;
+  }
+
+  button:hover {
+    background-color: lightgray;
+  }
+
+  .alert {
+    animation: fade-out 2s 2s both;
+  }
+}
+
+/* router */
+.router ul {
+  padding: 0px;
+
+  li {
+    display: inline-block;
+    margin: 10px;
+  }
+
+  li.active a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .separator {
+    margin-right: 15px;
+  }
+}
+
+/* sidebar */
+.sidebar {
+  .count-number {
+    margin-left: 10px;
+  }
+}
+
+/* person-table */
+.person-table {
+  /* person-table-head */
+  th {
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;  
+
+    span.fa {
+      margin-right: 0.5em;
+    }
+  }
+  th:hover {
+    background-color: lightgray;
+  }
+
+  /* person-table-row */
+  .last-added-list {
+    animation: fade-color 1s 1s backwards;
+  }
+
+  .last-added-hide {
+    background-color: coral;
+    animation: fade-out 1s 1s both;
+  }
+
+  /* person-table-cell */
+  .name {
+    width: 200px;
+    max-width: 200px;
+    overflow: hidden
+  }
+
+  .delete, .confirm {
+    min-width: 120px;
+  }
+
+  .confirm span[t="confirm.delete"] {
+    white-space: nowrap;
+  }
+
+  .delete, .confirm span {
+    cursor: default;
+  }
+
+  .confirm .yes, .confirm .no {
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 5px;
+  }
+
+  .confirm .delete:hover {
+    background-color: lightgray;
+  }
+}
+
+/* animations */
+@keyframes fade-out {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+@keyframes fade-color {
+  from {background-color: coral}
+  to {background-color: white}
+}

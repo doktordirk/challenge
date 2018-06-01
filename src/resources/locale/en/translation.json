@@ -1,0 +1,27 @@
+{
+  "action": {
+    "add": "Add",
+    "delete": "Delete"
+  },
+  "confirm": {
+    "delete": "Are you sure?",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "attribute": {
+    "name":"Name",
+    "total": "Total persons",
+    "rich": "Rich",
+    "power": "Superpower",
+    "genius": "Genius"
+  },
+  "title": {
+    "add-person": "Add new person",
+    "sidebar": "Statistics"
+  },
+  "info": {
+    "no-person-selected": "No person selected. Please select a filter bellow.",
+    "no-person-added": "Please add your persons.",
+    "required": {"name": "Name required"}
+  }  
+}

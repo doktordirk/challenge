@@ -1,0 +1,28 @@
+<template>
+  <require from="./elements/add-person"></require>
+  <require from='./elements/statistics'></require>
+
+    <div class='body'>
+        <div class='container'>
+          <div class='row'>
+            <div class='sidebar col-sm-2 order-last'>
+                <statistics></statistics>
+            </div>
+            <div class='main col'>
+                <add-person></add-person>
+                <router-view></router-view>
+                <div class='router'>
+                  <ul>
+                      <li repeat.for="nav of router.navigation" 
+                          if.bind="(nav.title==='total' && persons.list.length !== 0) || persons.count(nav.title) & signal:'person-list-change'"
+                          class="${nav.isActive ? 'active' : ''}">
+                          <span class="separator" if.bind="nav.title!=='total'">|</span>
+                          <a href.bind="nav.href" t="attribute.${nav.title}">${nav.title}</a>                 
+                      </li>
+                  </ul>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</template>

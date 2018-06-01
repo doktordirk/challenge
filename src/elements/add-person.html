@@ -1,0 +1,38 @@
+<template>
+  <div class="add-person">
+  <h3 t="title.add-person">Add new person</h3>
+    <div class="container">
+      <div class="row">
+        <div class="item grow">
+          <input type="text"
+                  name="add-person-name"
+                  value.bind="person.name" 
+                  placeholder="name" 
+                  aria-placeholder="name"
+                  required="true"
+                  t="[placeholder]attribute.name;[aria-placeholder]attribute.name">
+          <div class="alert alert-primary ${controller.errors.length ? '': 'hide'}" role="alert">
+            <div repeat.for="error of controller.errors">
+              ${error.message}      
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="row">
+            <div repeat.for="entry of schema" if.bind="entry.filter" class="checkbox col">
+              <input name="add-person-${entry.name}"
+                    type="checkbox"
+                    aria-label="${entry.name}" 
+                    checked.two-way="person[entry.name]"
+                    t="[aria-label]attribute.${entry.name}">
+              <label for="add-person-${entry.name}" t="attribute.${entry.name}">${entry.name}</label>    
+            </div>
+            <div class="col">
+              <button type="submit" name="add-person-submit" click.delegate="add()" t="action.add">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
