@@ -19,11 +19,6 @@ export class AddPerson {
 
   reset() {
     this.person = new Person();
-    for (let entry of Person.Schema) {
-      if (entry.filter) {
-        this.person[entry.name] = entry.default;
-      }
-    }
   }
 
   add() {

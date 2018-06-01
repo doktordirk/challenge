@@ -19,13 +19,13 @@
         </div>
         <div class="item">
           <div class="row">
-            <div repeat.for="entry of schema" if.bind="entry.filter" class="checkbox col">
-              <input name="add-person-${entry.name}"
+            <div repeat.for="attribute of person.attributes" class="checkbox col">
+              <input name="add-person-${attribute.name}"
                     type="checkbox"
-                    aria-label="${entry.name}" 
-                    checked.two-way="person[entry.name]"
-                    t="[aria-label]attribute.${entry.name}">
-              <label for="add-person-${entry.name}" t="attribute.${entry.name}">${entry.name}</label>    
+                    aria-label="${attribute.name}" 
+                    checked.two-way="attribute.value"
+                    t="[aria-label]attribute.${attribute.name}">
+              <label for="add-person-${attribute.name}" t="attribute.${attribute.name}">${attribute.name}</label>    
             </div>
             <div class="col">
               <button type="submit" name="add-person-submit" click.delegate="add()" t="action.add">Add</button>

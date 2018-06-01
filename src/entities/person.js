@@ -21,13 +21,13 @@ export class Person {
    * @param {{}} data object for initialization. Will be checked against Person.Schema
    * @memberof Person
    */
-  constructor(data) {
+  constructor() {
+    this.name = '';
+    this.attributes = [];
     for (let entry of Person.Schema) {
-      observable(this, entry.name);
-    }
-
-    if (data) {
-      this.set(data);
+      if (entry.filter) {
+        this.attributes.push({name: entry.name, value: entry.default});
+      }
     }
 
     ValidationRules
@@ -38,15 +38,5 @@ export class Person {
       //.then()
       //.satisfiesRule('nameNotInUse')
       .on(this);
-  }
-
-  set(data) {
-    for (let entry of Person.Schema) {
-      this[entry.name] = data[entry.name];
-
-      if (this[entry.name] === undefined) {
-        this[entry.name] = entry.default;
-      }
-    }
   }
 }

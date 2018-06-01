@@ -1,234 +1,138 @@
-import {inject, Factory, BindingEngine} from 'aurelia-framework';
-import {BindingSignaler} from 'aurelia-templating-resources';
+import { inject, BindingEngine } from 'aurelia-framework';
+import { Storage } from './storage';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subject } from 'rxjs/Subject';
+import { map } from 'rxjs/operators';
+import { Person } from '../entities/person';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
-import {Person} from '../entities/person';
-import {Storage} from '../services/storage';
 
-/**
- * List of all Persons
- * @export
- * @class Persons
- */
-@inject(Factory.of(Storage), BindingEngine, BindingSignaler)
+function getAttributeValue(person, attribute) {
+  return person.attributes.find(attr => attr.name === attribute).value;
+}
+
+@inject(BindingEngine)
 export class Persons {
-  /**
-   * Cache initialized with persons from db
-   */
-  initialized = false;
-
-  /**
-   * internal
-   */
-  _cache = [];
-
-  /**
-   * Storage service
-   * @param {Storage}
-   * @memberof Persons
-   */
+  Schema = Person.Schema;
   storage;
-
-  /**
-   * The last added person
-   * @param {Person}
-   * @memberof Persons
-   */
-  lastAdded = null;
-
-  /**
-   * The sort directions by attribute
-   * @param {{}}
-   * @memberof Persons
-   */
+  list;
+  changedPerson;
+  filter = 'total';
   sortDirection = {};
 
-  /**
-   * Get: Array of all persons from cache. Will load from db if not yet initialized
-   * @param {[Person]}
-   * @memberof Persons
-   */
-  get list() {
-    if (!this.initialized) {
-      return this.loadPersons();
-    }
-
-    return this._cache;
-  }
-
-  /**
-   * Creates an instance of Persons.
-   * @param {typeof Storage} StorageFactory
-   * @memberof Persons
-   */
-  constructor(StorageFactory, bindingEngine, bindingSignaler) {
-    this.storage = new StorageFactory('persons');
+  constructor(bindingEngine) {
     this.bindingEngine = bindingEngine;
-    this.bindingSignaler = bindingSignaler;
+    this.storage = new Storage('persons');
+    this.list = new BehaviorSubject(this.storage.getItems());
+    this.changedPerson = new Subject();
 
-    for (let entry of Person.Schema) {
-      if (entry.name !== 'id') {
-        this.sortDirection[entry.name] = 1;
-      }
-    }
+    this.sortDirection.name = 1;
+    this.Schema.map(attr => this.sortDirection[attr.name] = 1);
+    this.sortBy = new BehaviorSubject({attribute: 'name', dir: 1});
+    this.filter = new BehaviorSubject('total');
+
+    this.filtered = combineLatest(this.list, this.sortBy, this.filter).pipe(
+      map(([persons, sortBy, filter]) =>
+        persons
+          .filter(person => filter === 'total' || getAttributeValue(person, filter))
+          .sort((a, b) =>
+            sortBy.attribute === 'name' ?
+              a.name.localeCompare(b.name) * sortBy.dir :
+              (Number(getAttributeValue(b, sortBy.attribute)) - Number(getAttributeValue(a, sortBy.attribute))) * sortBy.dir
+          )
+          .map(person => this.observePerson(person))
+      )
+    );
+
+    this.allFiltered = combineLatest(this.list, this.filtered).pipe(
+      map(([persons, filtered]) => persons.length !== 0 && filtered.length === 0)
+    );
+
+    this.hasNoPersons = this.list.pipe(
+      map(persons => persons.length === 0)
+    );
   }
 
-  /**
-   * Observe person changes and persist if applicable
-   * @param {Person} The person
-   * @returns {Person} The person
-   * @memberof Persons
-   */
   observePerson(person) {
-    if (person instanceof Person === false) {
-      throw new TypeError('Not of type Person');
-    }
-
-    for (let key in person) {
+    for (let key in person.attributes) {
       this.bindingEngine
-        .propertyObserver(person, key)
+        .propertyObserver(person.attributes[key], 'value')
         .subscribe((newValue, oldValue) => this.updatePerson(person));
     }
 
     return person;
   }
 
-  /**
-   * Loads persons from db into cache
-   * @returns {[Person]} The loaded persons
-   * @memberof Persons
-   */
-  loadPersons() {
-    this.initialized = true;
-    this._cache = [];
-    let items = this.storage.getItems();
-
-    for (let index in items) {
-      let person = new Person(items[index]);
-      this.observePerson(person);
-
-      this._cache.push(person);
-    }
-    this.sort('name');
-    this.bindingSignaler.signal('person-list-change');
-
-    return this._cache;
+  updatePerson(person) {
+    const old = this.storage.getItem(person.id);
+    person = this.storage.updateItem(person);
+    this.list.next(this.storage.getItems());
+    this.changedPerson.next({old, new: person});
   }
 
-  /**
-   * Sort persons by attribute. Optionally, toggles direction setting beforehand
-   * @param {string|undefined} undefined: sort by last attribute, string: sort by 'name' or boolean filter attribute
-   * @param {boolean?} toggle toggles sort direction beforehand optionally
-   * @memberof Persons
-   */
-  sort(attribute, toggle) {
-    if (typeof attribute === 'string') {
-      this.lastSort = attribute;
-    } else {
-      attribute =  this.lastSort;
-    }
+  getPersons() {
+    this.list.next(this.storage.getItems());
+    return this.storage.getItems();
+  }
 
-    if (toggle === true) {
+  addPerson(person) {
+    const item = this.storage.addItem(person);
+    this.list.next(this.storage.getItems());
+    this.changedPerson.next({old: null, new: person});
+    return item;
+  }
+
+  removePerson(person) {
+    this.storage.removeItem(person);
+    this.list.next(this.storage.getItems());
+    this.changedPerson.next({old: person, new: null});
+    return person;
+  }
+
+  countAll() {
+    return this.list.pipe(
+      map(persons => {
+        const counts = {total: 0};
+        Person.Schema.map(attr => counts[attr.name] = 0);
+
+        persons.map(person => {
+          counts.total ++;
+          person.attributes.map(attr => {
+            if (attr.value) {
+              counts[attr.name]++;
+            }
+          });
+        });
+
+        return counts;
+      })
+    );
+  }
+
+  count(attribute) {
+    return this.list.pipe(
+      map(persons => {
+        let count = 0;
+
+        persons.map(person => {
+          if (attribute === 'total') count++;
+          person.attributes.map(attr => {
+            if (attr.name === attribute && attr.value) {
+              count++;
+            }
+          });
+        });
+
+        return count;
+      })
+    );
+  }
+
+  sort(attribute, toggle = false) {
+    if (toggle) {
       this.sortDirection[attribute] = this.sortDirection[attribute] === 1 ? -1 : 1;
     }
 
-    if (attribute === 'name') {
-      this._cache = this._cache.sort((a, b) => a.name.localeCompare(b.name) * this.sortDirection[attribute]);
-    } else {
-      this._cache = this._cache.sort((a, b) => (Number(b[attribute]) - Number(a[attribute])) * this.sortDirection[attribute]);
-    }
-  }
-
-  /**
-   * Gives an array of persons by filter from cache
-   * @param {string|undefined} filter
-   * @returns {[Person]} Array of filtered persons
-   * @memberof Persons
-   */
-  filtered(filter) {
-    if (filter !== undefined) {
-      return this.list.filter(person => person[filter]);
-    }
-
-    return this.list;
-  }
-
-  /**
-   * Counts persons by filter from cache
-   * @param {string|undefined} filter
-   * @returns {number} Number of filtered persons
-   * @memberof Persons
-   */
-  count(filter) {
-    return this.filtered(filter).length;
-  }
-
-  /**
-   * Get a person by id from cache
-   * @param {number} The id of the person
-   * @returns {Person} The removed person
-   * @memberof Persons
-   */
-  getPerson(id) {
-    return this.list.find(person => person.id === id);
-  }
-
-  /**
-   * Add a person to cache and on db
-   * @param {{}} The data for the new person
-   * @returns {Person} The added person with the inserted id
-   * @memberof Persons
-   */
-  addPerson(person) {
-    if (person instanceof Person === false) {
-      throw new TypeError('Not of type Person');
-    }
-
-    this.storage.addItem(person);
-    this.observePerson(person);
-    this._cache.push(person);
-    this.sort();
-    this.bindingSignaler.signal('person-list-change');
-    this.lastAdded = person;
-
-    setTimeout(() => {this.lastAdded = null;}, 1500);
-
-    return person;
-  }
-
-  /**
-   * Removes a person in cache and on db
-   * @param {Person} The person to remove
-   * @returns {Person} The removed person
-   * @memberof Persons
-   */
-  removePerson(person) {
-    if (person instanceof Person === false) {
-      throw new TypeError('Must by of type Person');
-    }
-
-    this.storage.removeItem(person);
-    this._cache = this._cache.filter(h => person.id !== h.id);
-    this.bindingSignaler.signal('person-list-change');
-
-    return person;
-  }
-
-  /**
-   * Updates a person in cache and on db
-   * @param {Person} The person to update
-   * @returns {Person} The updated person
-   * @memberof Persons
-   */
-  updatePerson(person) {
-    if (person instanceof Person === false) {
-      throw new TypeError('Must by of type Person');
-    }
-
-    this.storage.updateItem(person);
-    this._cache = this._cache.map(h => person.id === h.id ? person : h);
-    this.sort();
-    this.bindingSignaler.signal('person-list-change');
-
-    return person;
+    this.sortBy.next({attribute, dir: this.sortDirection[attribute]});
   }
 }

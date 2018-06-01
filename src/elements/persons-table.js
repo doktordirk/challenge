@@ -1,11 +1,10 @@
 import { activationStrategy } from 'aurelia-router';
 import { inject, ElementEvents } from 'aurelia-framework';
 import { DOM } from 'aurelia-pal';
-
 import { Person } from '../entities/person';
 import { Persons } from '../services/persons';
 
-@inject( Persons)
+@inject( Persons )
 export class Overview {
   /**
    * The PersonSchema
@@ -13,7 +12,7 @@ export class Overview {
    * @param {{}} Schema = Person.Schema
    * @memberof Person
    */
-  schema = Person.Schema;
+  Schema = Person.Schema;
 
   /**
    * Stored the person for delete confirmation
@@ -38,6 +37,7 @@ export class Overview {
 
   activate(params, routeData, router) {
     this.filter = routeData.name;
+    this.persons.filter.next(routeData.name);
   }
 
   attached() {

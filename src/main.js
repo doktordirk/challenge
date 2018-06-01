@@ -10,6 +10,7 @@ Bluebird.config({ warnings: { wForgottenReturn: false } });
 export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
+    .plugin(PLATFORM.moduleName('aurelia-async-binding'))
     .plugin(PLATFORM.moduleName('aurelia-validation'))
     .plugin(PLATFORM.moduleName('aurelia-i18n'), instance => {
       instance.i18next.use(Backend);
