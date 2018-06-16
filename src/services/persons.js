@@ -2,47 +2,45 @@ import { inject, BindingEngine } from 'aurelia-framework';
 import { Storage } from './storage';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { map } from 'rxjs/operators';
+import { map, pluck } from 'rxjs/operators';
 import { Person } from '../entities/person';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-
+import { Store } from 'aurelia-store';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 function getAttributeValue(person, attribute) {
-  return person.attributes.find(attr => attr.name === attribute).value;
+  return Boolean(person.attributes.find(attr => attr.name === attribute).value) ? 1 : -1;
 }
 
-@inject(BindingEngine)
+@inject(Store, BindingEngine)
 export class Persons {
   Schema = Person.Schema;
   storage;
   list;
   changedPerson;
-  filter = 'total';
-  sortDirection = {};
+  lastAdded;
 
-  constructor(bindingEngine) {
+  constructor(store, bindingEngine) {
+    this.store = store;
     this.bindingEngine = bindingEngine;
     this.storage = new Storage('persons');
     this.list = new BehaviorSubject(this.storage.getItems());
     this.changedPerson = new Subject();
-
-    this.sortDirection.name = 1;
-    this.Schema.map(attr => this.sortDirection[attr.name] = 1);
-    this.sortBy = new BehaviorSubject({attribute: 'name', dir: 1});
-    this.filter = new BehaviorSubject('total');
-
-    this.filtered = combineLatest(this.list, this.sortBy, this.filter).pipe(
-      map(([persons, sortBy, filter]) =>
-        persons
-          .filter(person => filter === 'total' || getAttributeValue(person, filter))
-          .sort((a, b) =>
-            sortBy.attribute === 'name' ?
-              a.name.localeCompare(b.name) * sortBy.dir :
-              (Number(getAttributeValue(b, sortBy.attribute)) - Number(getAttributeValue(a, sortBy.attribute))) * sortBy.dir
-          )
-          .map(person => this.observePerson(person))
-      )
-    );
+    this.sortBy = store.state.pipe(pluck('sortBy'), distinctUntilChanged());
+    this.filter = store.state.pipe(pluck('filter'), distinctUntilChanged());
+    this.sortDirections = store.state.pipe(pluck('sortDirections'), distinctUntilChanged());
+    this.filtered = combineLatest(this.list, this.sortBy, this.filter, this.sortDirections)
+      .pipe(
+        distinctUntilChanged(),
+        map(([persons, sortBy, filter, sortDirections]) =>
+          persons
+            .filter(person => filter === 'total' || getAttributeValue(person, filter) === 1)
+            .sort((a, b) => sortBy === 'name' ?
+              a.name.localeCompare(b.name) * sortDirections[sortBy] :
+              (getAttributeValue(b, sortBy) - getAttributeValue(a, sortBy)) * sortDirections[sortBy])
+            .map(person => this.observePerson(person))
+        )
+      );
 
     this.allFiltered = combineLatest(this.list, this.filtered).pipe(
       map(([persons, filtered]) => persons.length !== 0 && filtered.length === 0)
@@ -76,10 +74,12 @@ export class Persons {
   }
 
   addPerson(person) {
-    const item = this.storage.addItem(person);
+    person = this.storage.addItem(person);
     this.list.next(this.storage.getItems());
     this.changedPerson.next({old: null, new: person});
-    return item;
+    this.lastAdded = person;
+    setTimeout(()=>{this.lastAdded =  null;}, 2000);
+    return person;
   }
 
   removePerson(person) {
@@ -130,9 +130,9 @@ export class Persons {
 
   sort(attribute, toggle = false) {
     if (toggle) {
-      this.sortDirection[attribute] = this.sortDirection[attribute] === 1 ? -1 : 1;
+      this.store.dispatch('ToggleSortDirection', attribute);
     }
 
-    this.sortBy.next({attribute, dir: this.sortDirection[attribute]});
+    this.store.dispatch('SetSortBy', attribute);
   }
 }

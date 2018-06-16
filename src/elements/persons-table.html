@@ -15,7 +15,7 @@
         </thead>
         <tbody>
             <tr repeat.for="person of persons.filtered & async"
-                class="${person === persons.lastAdded ? 'last-added-list' : ''}">
+                class="${person.id === persons.lastAdded.id ? 'last-added-list' : ''}">
               <td class='name' scope="row">${person.name}</td>
               <td repeat.for="entry of person.attributes" scope="row">
                 <input type="checkbox"
@@ -31,20 +31,22 @@
                       t="[aria-label]action.delete"></span>
                 <span class='confirm' if.bind="doConfirm === person" >
                   <span t="confirm.delete">Are you sure?</span>
-                  <span click.delegate="persons.removePerson(person)" class="delete" t="confirm.yes">Yes</span>
-                  <span click.delegate="doConfirm=false" class="delete" t="confirm.no">No</span>
+                  <span click.delegate="persons.removePerson(person)" class="yes" t="confirm.yes">Yes</span>
+                  <span click.delegate="doConfirm=false" class="no" t="confirm.no">No</span>
                 </span>
               </td>
             </tr>
             <tr if.bind="filter !== 'total' && !persons.lastAdded[filter] && persons.lastAdded" 
                 class="last-added-hide">
               <td scope="row">${persons.lastAdded.name}</td>
-              <td repeat.for="entry of schema" scope="row" if.bind='entry.filter'>
+              <td repeat.for="entry of Schema" scope="row" if.bind='entry.filter'>
                 <input type="checkbox" 
                         aria-label="Checkbox for following text input"
                         checked.two-way='persons.lastAdded[entry.name]'>
               </td>
-              <td scope="row">x</td>
+              <td scope="row">
+                <span class="delete fa fa-trash" style="color: darkgray"></span>
+              </td>
             </tr>  
           </tbody>
       </table>

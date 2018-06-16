@@ -1,11 +1,8 @@
 import environment from './environment';
 import {PLATFORM} from 'aurelia-pal';
 import Backend from 'i18next-xhr-backend';
-import 'babel-polyfill';
-import * as Bluebird from 'bluebird';
 
-// remove out if you don't want a Promise polyfill (remove also from webpack.config.js)
-Bluebird.config({ warnings: { wForgottenReturn: false } });
+import {initialState} from './config/state';
 
 export function configure(aurelia) {
   aurelia.use
@@ -19,13 +16,15 @@ export function configure(aurelia) {
         backend: {
           loadPath: './resources/locale/{{lng}}/{{ns}}.json'
         },
-        lng        : 'en',
-        attributes : ['t'],
+        lng: 'en',
+        attributes: ['t'],
         fallbackLng: 'en',
-        debug      : environment.debug,
+        debug: environment.debug
       });
     })
     .feature(PLATFORM.moduleName('resources/index'));
+
+  aurelia.use.plugin(PLATFORM.moduleName('aurelia-store'), { initialState });
 
   if (environment.debug) {
     aurelia.use.developmentLogging();

@@ -3,8 +3,9 @@ import { inject, ElementEvents } from 'aurelia-framework';
 import { DOM } from 'aurelia-pal';
 import { Person } from '../entities/person';
 import { Persons } from '../services/persons';
+import { Store } from 'aurelia-store';
 
-@inject( Persons )
+@inject( Store, Persons )
 export class Overview {
   /**
    * The PersonSchema
@@ -27,7 +28,8 @@ export class Overview {
    * @param {Persons} persons
    * @memberof Overview
    */
-  constructor(persons) {
+  constructor(store, persons) {
+    this.store = store;
     this.persons = persons;
   }
 
@@ -37,7 +39,7 @@ export class Overview {
 
   activate(params, routeData, router) {
     this.filter = routeData.name;
-    this.persons.filter.next(routeData.name);
+    this.store.dispatch('SetFilter', routeData.name);
   }
 
   attached() {

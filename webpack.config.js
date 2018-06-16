@@ -29,7 +29,8 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     modules: [srcDir, 'node_modules'],
   },
   entry: {
-    app: ['aurelia-bootstrapper']
+    app: ['aurelia-bootstrapper'],
+    vendor: ['jquery', 'bootstrap']
   },
   mode: production ? 'production' : 'development',
   output: {
@@ -95,7 +96,8 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       features: { svg: false }
     }),
     new ProvidePlugin({
-      'Promise': 'bluebird'
+      'jQuery': 'jquery',
+      '$': 'jquery'
     }),
     new ModuleDependenciesPlugin({
       'aurelia-testing': [ './compile-spy', './view-spy' ]
