@@ -33,11 +33,11 @@ describe('base app', function() {
   });
 
   it('should start up with page total', async() => {
-    expect(await browser.getTitle()).toBe('total');
+    expect(await browser.getTitle()).toBe('Total persons');
   });
 
   it('should display linked counts', async() => {
-    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total:3');
+    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total persons:3');
     expect(await poSidebar.getAttributeCountFromLink('rich')).toBe('Rich:1');
     expect(await poSidebar.getAttributeCountFromLink('genius')).toBe('Genius:2');
     expect(await poSidebar.getAttributeCountFromLink('power')).toBe('Superpower:1');
@@ -85,7 +85,7 @@ describe('base app', function() {
     await browser.driver.sleep(500);
     poRouter.navigateTo('rich');
     await browser.driver.sleep(500);
-    expect(await browser.getTitle()).toBe('rich');
+    expect(await browser.getTitle()).toBe('Rich');
     names = await poTable.getPersonNames();
     expect(names.length).toBe(1);
     expect(names[0]).toBe('Bill Gates');
@@ -95,7 +95,7 @@ describe('base app', function() {
     poRouter.navigateTo('power');
     await browser.driver.sleep(500);
     names = await poTable.getPersonNames();
-    expect(await browser.getTitle()).toBe('power');
+    expect(await browser.getTitle()).toBe('Superpower');
     expect(names.length).toBe(1);
     expect(names[0]).toBe('Zaphod Beeblebrox');
 
@@ -104,14 +104,14 @@ describe('base app', function() {
     poRouter.navigateTo('genius');
     await browser.driver.sleep(500);
     names = await poTable.getPersonNames();
-    expect(await browser.getTitle()).toBe('genius');
+    expect(await browser.getTitle()).toBe('Genius');
     expect(names.length).toBe(2);
     expect(names[0]).toBe('Albert Einstein');
 
     poRouter.navigateTo('');
     await browser.driver.sleep(500);
     names = await poTable.getPersonNames();
-    expect(await browser.getTitle()).toBe('total');
+    expect(await browser.getTitle()).toBe('Total persons');
     expect(names.length).toBe(3);
   });
 
@@ -122,7 +122,7 @@ describe('base app', function() {
     let names = await poTable.getPersonNames();
 
     expect(error).toBe('');
-    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total:4');
+    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total persons:4');
     expect(await poSidebar.getAttributeCountFromLink('rich')).toBe('Rich:1');
     expect(await poSidebar.getAttributeCountFromLink('genius')).toBe('Genius:2');
     expect(await poSidebar.getAttributeCountFromLink('power')).toBe('Superpower:1');
@@ -137,7 +137,7 @@ describe('base app', function() {
     let names = await poTable.getPersonNames();
 
     expect(error).toBe('');
-    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total:4');
+    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total persons:4');
     expect(await poSidebar.getAttributeCountFromLink('rich')).toBe('Rich:2');
     expect(await poSidebar.getAttributeCountFromLink('genius')).toBe('Genius:3');
     expect(await poSidebar.getAttributeCountFromLink('power')).toBe('Superpower:2');
@@ -153,7 +153,7 @@ describe('base app', function() {
 
     expect(error).toBe('Name is required.');
     expect(names.length).toBe(3);
-    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total:3');
+    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total persons:3');
     expect(await poSidebar.getAttributeCountFromLink('rich')).toBe('Rich:1');
     expect(await poSidebar.getAttributeCountFromLink('genius')).toBe('Genius:2');
     expect(await poSidebar.getAttributeCountFromLink('power')).toBe('Superpower:1');
@@ -165,7 +165,7 @@ describe('base app', function() {
     await browser.driver.sleep(500);
     let names = await poTable.getPersonNames();
 
-    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total:3');
+    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total persons:3');
     expect(names.length).toBe(3);
   });
 
@@ -174,7 +174,7 @@ describe('base app', function() {
     await browser.driver.sleep(500);
     let names = await poTable.getPersonNames();
 
-    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total:2');
+    expect(await poSidebar.getTotalFromFirstLink()).toBe('Total persons:2');
     expect(names.length).toBe(2);
     expect(await poSidebar.getAttributeCountFromLink('rich')).toBe('Rich:1');
     expect(await poSidebar.getAttributeCountFromLink('genius')).toBe('Genius:1');

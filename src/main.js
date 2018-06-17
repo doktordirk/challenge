@@ -1,5 +1,6 @@
 import environment from './environment';
 import {PLATFORM} from 'aurelia-pal';
+import {AppRouter} from 'aurelia-router';
 import Backend from 'i18next-xhr-backend';
 import 'babel-polyfill';
 import * as Bluebird from 'bluebird';
@@ -18,10 +19,13 @@ export function configure(aurelia) {
         backend: {
           loadPath: './resources/locale/{{lng}}/{{ns}}.json'
         },
-        lng        : 'en',
-        attributes : ['t'],
+        lng: 'en',
+        attributes: ['t'],
         fallbackLng: 'en',
-        debug      : environment.debug,
+        debug: environment.debug
+      }).then(() => {
+        const router = aurelia.container.get(AppRouter);
+        router.transformTitle = title => instance.tr(`attribute.${title}`);
       });
     })
     .feature(PLATFORM.moduleName('resources/index'));
