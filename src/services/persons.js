@@ -2,11 +2,10 @@ import { inject, BindingEngine } from 'aurelia-framework';
 import { Storage } from './storage';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
-import { map, pluck } from 'rxjs/operators';
+import { map, pluck, distinctUntilChanged } from 'rxjs/operators';
 import { Person } from '../entities/person';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Store } from 'aurelia-store';
-import { distinctUntilChanged } from 'rxjs/operators';
 
 function getAttributeValue(person, attribute) {
   return Boolean(person.attributes.find(attr => attr.name === attribute).value) ? 1 : -1;
@@ -23,7 +22,7 @@ export class Persons {
   constructor(store, bindingEngine) {
     this.store = store;
     this.bindingEngine = bindingEngine;
-    this.storage = new Storage('persons');
+    this.storage = new Storage('persons-async');
     this.list = new BehaviorSubject(this.storage.getItems());
     this.changedPerson = new Subject();
     this.sortBy = store.state.pipe(pluck('sortBy'), distinctUntilChanged());

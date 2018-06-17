@@ -1,5 +1,6 @@
 import environment from './environment';
 import {PLATFORM} from 'aurelia-pal';
+import {AppRouter} from 'aurelia-router';
 import Backend from 'i18next-xhr-backend';
 
 import {initialState} from './config/state';
@@ -20,6 +21,9 @@ export function configure(aurelia) {
         attributes: ['t'],
         fallbackLng: 'en',
         debug: environment.debug
+      }).then(() => {
+        const router = aurelia.container.get(AppRouter);
+        router.transformTitle = title => instance.tr(`attribute.${title}`);
       });
     })
     .feature(PLATFORM.moduleName('resources/index'));

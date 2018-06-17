@@ -3,9 +3,14 @@ import { inject, ElementEvents } from 'aurelia-framework';
 import { DOM } from 'aurelia-pal';
 import { Person } from '../entities/person';
 import { Persons } from '../services/persons';
-import { Store } from 'aurelia-store';
+import { Store, connectTo } from 'aurelia-store';
+import { pluck, distinctUntilChanged } from 'rxjs/operators';
 
 @inject( Store, Persons )
+@connectTo({
+  selector: store => store.state.pipe(pluck('sortDirections'), distinctUntilChanged()),
+  target: 'sortDirections'
+})
 export class Overview {
   /**
    * The PersonSchema

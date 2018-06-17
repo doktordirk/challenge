@@ -8,7 +8,7 @@
                 click.delegate="persons.sort(entry.name, true)"
                 scope="col"
                 class="header-${entry.name}">
-              <span class="fa fa-caret-${persons.sortDirection[entry.name] === 1 ? 'down' : 'up'}"></span><span  t="attribute.${entry.name}">${entry.name}</span>
+              <span class="fa fa-caret-${sortDirections[entry.name] === 1 ? 'down' : 'up'}"></span><span  t="attribute.${entry.name}">${entry.name}</span>
             </th>
             <th class="header-delete" t="action.delete">Delete</th>
           </tr>
