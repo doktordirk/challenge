@@ -30,6 +30,7 @@ describe('base app', function() {
        }));
       window.location.reload();
     `);
+    await browser.driver.sleep(1000);
   });
 
   it('should start up with page total', async() => {
