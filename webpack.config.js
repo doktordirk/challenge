@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
@@ -120,8 +122,27 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       }
     }),
     new CopyWebpackPlugin([
-      {from: 'src/resources/locale/', to: 'resources/locale/'}
+      {from: 'src/resources/locale/', to: 'resources/locale/'},
     ]),
+    new WebpackPwaManifest({
+      name: 'Challenge',
+      short_name: 'Challenge',
+      theme_color: '#2196f3',
+      background_color: '#2196f3',
+      display: 'fullscreen',
+      Scope: '/',
+      start_url: '/',
+      fingerprints: true,
+      icons: [
+        {
+          src: path.resolve('static/images/icons/icon.png'),
+          sizes: [72, 96, 128, 144, 152, 192, 384, 512]
+        }
+      ],
+      splash_pages: null
+    }),
+    new WorkboxPlugin.GenerateSW({
+    }),
     ...when(extractCss, new ExtractTextPlugin({
       filename: production ? '[contenthash].css' : '[id].css',
       allChunks: true
