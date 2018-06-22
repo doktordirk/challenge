@@ -9,6 +9,7 @@
     "no": "No"
   },
   "attribute": {
+    "id":"ID",
     "name":"Name",
     "total": "Total persons",
     "rich": "Rich",
