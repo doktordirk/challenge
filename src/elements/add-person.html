@@ -1,4 +1,6 @@
 <template>
+  <require from="./checkbox"></require>
+
   <div class="add-person">
   <h3 t="title.add-person">Add new person</h3>
     <div class="container">
@@ -20,17 +22,12 @@
         <div class="item col">
           <div class="checkboxes">
             <div repeat.for="entry of schema"
-                 show.bind="entry.filter"
-                 class="checkbox">
-              <input name="add-person-${entry.name}"
-                    type="checkbox"
-                    aria-label="${entry.name}" 
-                    checked.two-way="person[entry.name]"
-                    t="[aria-label]attribute.${entry.name}">
-              <label for="add-person-${entry.name}"
-                     t="attribute.${entry.name}">
-                ${entry.name}
-              </label>    
+                 show.bind="entry.filter">
+              <checkbox 
+                  value.bind="person[entry.name]" 
+                  name.bind="entry.name"
+                  t="[title]attribute.${entry.name}">
+              </checkbox>    
             </div>
             <div class="">
               <button type="submit"
