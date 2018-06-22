@@ -16,14 +16,6 @@ export class Overview {
   schema = Person.Schema;
 
   /**
-   * Stored the person for delete confirmation
-   *
-   * @param {Person} Person
-   * @memberof Person
-   */
-  doConfirm = {};
-
-  /**
    *Creates an instance of Overview.
    * @param {Persons} persons
    * @memberof Overview
@@ -42,14 +34,13 @@ export class Overview {
 
   attached() {
     this.events = new ElementEvents(DOM);
-    this.cancelClickSubscription = this.events.subscribe('click', ev => {
-      if (ev.target.id !== 'delete-person') {
-        this.doConfirm = false;
-      }
-    }, false);
   }
 
   detached() {
     this.cancelClickSubscription.dispose();
+  }
+
+  domClickSubscriber = (eventHandler) => {
+    this.cancelClickSubscription = this.events.subscribe('click', eventHandler, false);
   }
 }

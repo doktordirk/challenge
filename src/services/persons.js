@@ -203,7 +203,7 @@ export class Persons {
    * @returns {Person} The removed person
    * @memberof Persons
    */
-  removePerson(person) {
+  removePerson = (person) => {
     if (person instanceof Person === false) {
       throw new TypeError('Must by of type Person');
     }

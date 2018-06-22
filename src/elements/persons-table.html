@@ -1,5 +1,7 @@
 <template>
     <require from="./checkbox"></require>
+    <require from="./inline-confirm"></require>
+
     <div>
       <table class="table table-hover person-table" if.bind="persons.list.length !== 0">
         <thead>
@@ -27,16 +29,15 @@
                   </checkbox> 
               </td>
               <td scope="row">
-                <span click.delegate="doConfirm=person" 
-                      if.bind="doConfirm !== person" 
-                      class="delete fa fa-trash" 
-                      id="delete-person"
-                      t="[aria-label]action.delete"></span>
-                <span class='confirm' if.bind="doConfirm === person" >
-                  <span t="confirm.delete">Are you sure?</span>
-                  <span click.delegate="persons.removePerson(person)" class="yes" t="confirm.yes">Yes</span>
-                  <span click.delegate="doConfirm=false" class="no" t="confirm.no">No</span>
-                </span>
+                  <inline-confirm
+                      handle.bind="person"
+                      action.bind="persons.removePerson"
+                      cancel-subscriber.bind="domClickSubscriber">
+                    <span slot="action" class="delete fa fa-trash" t="[aria-label]action.delete"></span>
+                    <span slot="question" t="confirm.delete">Are you sure?</span>            
+                    <span slot="yes" t="confirm.yes">Yes</span>
+                    <span slot="no" t="confirm.no">No</span>
+                  </inline-confirm>
               </td>
             </tr>
             <tr if.bind="filter !== 'total' && !persons.lastAdded[filter] && persons.lastAdded" 
