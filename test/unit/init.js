@@ -5,11 +5,11 @@ import {StandardValidator} from 'aurelia-validation';
 //circumvent parser registration issues
 StandardValidator.prototype.getMessage = key => key;
 
-export function init(cb) {
-  bootstrap(aurelia => {
+export function init(cb, next) {
+  return bootstrap(aurelia => {
     aurelia.use
       .plugin(PLATFORM.moduleName('aurelia-validation'));
 
-    aurelia.start().then(cb);
-  });
+    return aurelia.start().then(cb);
+  }).then(next).catch(next);
 }

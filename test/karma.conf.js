@@ -42,7 +42,7 @@ module.exports = function (config) {
     reporters: [ 'mocha', 'progress', 'coverage' ],
 
     coverageReporter: {
-      reporters: [ {type: 'text'}, { type: 'text-summary', file: 'coverage.txt' } ],
+      reporters: [ {type: 'lcovonly'}, {type: 'text'}, { type: 'text-summary', file: 'coverage.txt' } ],
       dir: path.resolve(__dirname, 'coverage-karma'),
       subdir: '.',
     },

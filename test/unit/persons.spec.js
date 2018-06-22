@@ -19,9 +19,7 @@ describe('Persons', () => {
     init(aurelia => {
       let persons = aurelia.container.get(Persons);
       expect(persons.storage instanceof Storage).toBe(true);
-
-      next();
-    });
+    }, next);
   });
 
   it('observePerson(person) throw if not of type Person', next => {
@@ -32,9 +30,7 @@ describe('Persons', () => {
       let error = ()  => persons.observePerson(person);
 
       expect(error).toThrowError(TypeError, 'Not of type Person');
-
-      next();
-    });
+    }, next);
   });
 
   it('observePerson(person) adds observes and persists if applicable', next => {
@@ -50,9 +46,12 @@ describe('Persons', () => {
       returnedPerson.name = 'bar';
 
       setTimeout(function() {
-        expect(persons.storage.updateItem).toHaveBeenCalledWith(person);
-
-        next();
+        try {
+          expect(persons.storage.updateItem).toHaveBeenCalledWith(person);
+          next();
+        } catch (e) {
+          next(e);
+        }
       }, 1);
     });
   });
@@ -67,9 +66,7 @@ describe('Persons', () => {
 
       expect(persons._cache[0].name).toBe('bar');
       expect(persons.sortDirection.name).toBe(1);
-
-      next();
-    });
+    }, next);
   });
 
   it('sort(attribute: string, true) to toggle direction and sorts persons', next => {
@@ -81,9 +78,7 @@ describe('Persons', () => {
 
       expect(persons._cache[0].name).toBe('foo');
       expect(persons.sortDirection.name).toBe(-1);
-
-      next();
-    });
+    }, next);
   });
 
   it('sort(attribute: boolean) sorts persons', next => {
@@ -95,9 +90,7 @@ describe('Persons', () => {
 
       expect(persons._cache[0].rich).toBe(true);
       expect(persons.sortDirection.rich).toBe(1);
-
-      next();
-    });
+    }, next);
   });
 
   it('sort(attribute: boolean, true) to toggle direction and sorts persons', next => {
@@ -109,9 +102,7 @@ describe('Persons', () => {
 
       expect(persons._cache[0].rich).toBe(false);
       expect(persons.sortDirection.rich).toBe(-1);
-
-      next();
-    });
+    }, next);
   });
 
   it('loadPersons() loads from db and returns full list', next => {
@@ -124,9 +115,7 @@ describe('Persons', () => {
       expect(persons.initialized).toBe(true);
       expect(PersonsList.length).toBe(3);
       expect(PersonsList.filter(person => person.name === 'foo').length).toBe(0);
-
-      next();
-    });
+    }, next);
   });
 
   it('list if not initialized, loads from db and returns full list', next => {
@@ -139,9 +128,7 @@ describe('Persons', () => {
       expect(persons.initialized).toBe(true);
       expect(persons.loadPersons).toHaveBeenCalled();
       expect(PersonsList.length).toBe(3);
-
-      next();
-    });
+    }, next);
   });
 
   it('list if initialized, not to load from db and just returns full list', next => {
@@ -155,9 +142,7 @@ describe('Persons', () => {
 
       expect(persons.loadPersons).not.toHaveBeenCalled();
       expect(PersonsList.length).toBe(3);
-
-      next();
-    });
+    }, next);
   });
 
   it('filtered() returns full list', next => {
@@ -165,9 +150,7 @@ describe('Persons', () => {
       let persons = aurelia.container.get(Persons);
 
       expect(persons.filtered().length).toBe(3);
-
-      next();
-    });
+    }, next);
   });
 
   it('filtered(filter) returns filtered list', next => {
@@ -175,9 +158,7 @@ describe('Persons', () => {
       let persons = aurelia.container.get(Persons);
 
       expect(persons.filtered('power').length).toBe(2);
-
-      next();
-    });
+    }, next);
   });
 
   it('count() counts items', next => {
@@ -185,9 +166,7 @@ describe('Persons', () => {
       let persons = aurelia.container.get(Persons);
 
       expect(persons.count()).toBe(3);
-
-      next();
-    });
+    }, next);
   });
 
   it('count(filter) counts items matching filter', next => {
@@ -195,9 +174,7 @@ describe('Persons', () => {
       let persons = aurelia.container.get(Persons);
 
       expect(persons.count('power')).toBe(2);
-
-      next();
-    });
+    }, next);
   });
 
   it('getPerson(id) gets a person by id', next => {
@@ -210,9 +187,7 @@ describe('Persons', () => {
 
       expect(person.id).toBe(1);
       expect(person.name).toBe('foo');
-
-      next();
-    });
+    }, next);
   });
 
   it('addPerson(data) adds a person with data and persists', next => {
@@ -230,9 +205,7 @@ describe('Persons', () => {
 
       persons.loadPersons();
       expect(persons.count()).toBe(4);
-
-      next();
-    });
+    }, next);
   });
 
   it('addPerson(person) throw if not of type Person', next => {
@@ -243,9 +216,7 @@ describe('Persons', () => {
       let error = ()  => persons.addPerson(person);
 
       expect(error).toThrowError(TypeError, 'Not of type Person');
-
-      next();
-    });
+    }, next);
   });
 
   it('removePerson(person) removes a person and persists', next => {
@@ -263,9 +234,7 @@ describe('Persons', () => {
 
       expect(persons.count()).toBe(2);
       expect(persons.getPerson(person.id)).toBeUndefined();
-
-      next();
-    });
+    }, next);
   });
 
   it('removePerson(person) throw if not of type Person', next => {
@@ -276,9 +245,7 @@ describe('Persons', () => {
       let error = ()  => persons.removePerson(person);
 
       expect(error).toThrowError(TypeError, 'Not of type Person');
-
-      next();
-    });
+    }, next);
   });
 
   it('updatePerson(person) throw if not of type Person', next => {
@@ -289,8 +256,6 @@ describe('Persons', () => {
       let error = ()  => persons.updatePerson(person);
 
       expect(error).toThrowError(TypeError, 'Not of type Person');
-
-      next();
-    });
+    }, next);
   });
 });
