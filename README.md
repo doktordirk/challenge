@@ -6,8 +6,8 @@ A sample aurelia-cli-webpack-babel-scss project
 
 ### Install
 
-* Requirements: nodej 8+, [aurelia-cli](https://www.npmjs.com/package/aurelia-cli)
-* From your shell in the folder run `npm i` or `yarn install`
+* Requirements: nodejs 8+, yarn, [aurelia-cli](https://www.npmjs.com/package/aurelia-cli)
+* From your shell in the folder run `yarn install`
 
 ### Build and run
 
