@@ -14,7 +14,7 @@
                 <div class='router'>
                   <ul>
                       <li repeat.for="nav of router.navigation" 
-                          if.bind="(nav.title==='total' && persons.list.length !== 0) || persons.count(nav.title) & signal:'person-list-change'"
+                          show.bind="(nav.title==='total' && persons.list.length !== 0) || persons.count(nav.title) & signal:'person-list-change'"
                           class="${nav.isActive ? 'active' : ''}">
                           <span class="separator" if.bind="nav.title!=='total'">|</span>
                           <a href.bind="nav.href" t="attribute.${nav.title}">${nav.title}</a>                 

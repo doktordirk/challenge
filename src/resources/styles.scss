@@ -8,17 +8,22 @@
 .add-person {
   .item {
     margin: 5px;
+    padding: 0;
   }
   .grow {
     flex-grow: 1;
     input {
       width: 100%;
+      min-width: 100px;
+      margin: 0.5rem;
     }
   }
-
+  .checkboxes {
+    display: flex;
+  }
   .checkbox {
     white-space: nowrap;
-    margin-top: .10rem;
+    margin: 0.5rem;
   }
 
   button {
@@ -27,6 +32,7 @@
     border-width: 2px;
     border-color: black;
     background-color: white;
+    margin: 0.5rem;
   }
 
   button:hover {
