@@ -57,7 +57,9 @@ export class Persons {
 
   /**
    * Creates an instance of Persons.
-   * @param {typeof Storage} StorageFactory
+   * @param {Storage} StorageFactory
+   * @param {BindingEngine} bindingEngine
+   * @param {BindingSignaler} bindingSignaler
    * @memberof Persons
    */
   constructor(StorageFactory, bindingEngine, bindingSignaler) {
@@ -74,7 +76,7 @@ export class Persons {
 
   /**
    * Observe person changes and persist if applicable
-   * @param {Person} The person
+   * @param {Person} person The person
    * @returns {Person} The person
    * @memberof Persons
    */
@@ -116,8 +118,8 @@ export class Persons {
 
   /**
    * Sort persons by attribute. Optionally, toggles direction setting beforehand
-   * @param {string|undefined} undefined: sort by last attribute, string: sort by 'name' or boolean filter attribute
-   * @param {boolean?} toggle toggles sort direction beforehand optionally
+   * @param {string=} undefined: sort by last attribute, string: sort by 'name' or boolean filter attribute
+   * @param {boolean=} toggle toggles sort direction beforehand optionally
    * @memberof Persons
    */
   sort(attribute, toggle) {
