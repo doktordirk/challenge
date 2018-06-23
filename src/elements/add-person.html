@@ -13,7 +13,8 @@
                   aria-placeholder="name"
                   required="true"
                   t="[placeholder]attribute.name;[aria-placeholder]attribute.name">
-          <div class="alert alert-primary ${controller.errors.length ? '': 'hide'}" role="alert">
+          <div class="alert alert-primary ${controller.errors.length ? '': 'hide'}" 
+               role="alert">
             <div repeat.for="error of controller.errors">
               ${error.message}      
             </div>

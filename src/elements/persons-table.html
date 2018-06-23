@@ -11,58 +11,62 @@
                 click.delegate="persons.sort(entry.name, true)"
                 scope="col"
                 class="header-${entry.name}">
-              <span class="fa fa-caret-${persons.sortDirection[entry.name] === 1 ? 'down' : 'up'}"></span><span  t="attribute.${entry.name}">${entry.name}</span>
+              <span class="fa fa-caret-${persons.sortDirection[entry.name] === 1 ? 'down' : 'up'}"></span>
+              <span t="attribute.${entry.name}">${entry.name}</span>
             </th>
             <th class="header-delete" t="action.delete">Delete</th>
           </tr>
         </thead>
         <tbody>
-            <tr repeat.for="person of persons.list"
-                show.bind='filter === "total" || person[filter]'
-                class="${person === persons.lastAdded ? 'last-added-list' : ''}">
-              <td class='name' scope="row">${person.name}</td>
-              <td repeat.for="entry of schema" scope="row" show.bind="entry.filter">
-                  <checkbox 
-                      value.bind="person[entry.name]" 
-                      name.bind="entry.name"
-                      t="[aria]attribute.${entry.name}">
-                  </checkbox> 
-              </td>
-              <td scope="row">
-                  <inline-confirm
-                      handle.bind="person"
-                      action.bind="persons.removePerson"
-                      cancel-subscriber.bind="domClickSubscriber">
-                    <span slot="action" class="delete fa fa-trash" t="[aria-label]action.delete"></span>
-                    <span slot="question" t="confirm.delete">Are you sure?</span>            
-                    <span slot="yes" t="confirm.yes">Yes</span>
-                    <span slot="no" t="confirm.no">No</span>
-                  </inline-confirm>
-              </td>
-            </tr>
-            <tr if.bind="filter !== 'total' && !persons.lastAdded[filter] && persons.lastAdded" 
-                class="last-added-hide">
-              <td scope="row">${persons.lastAdded.name}</td>
+          <tr repeat.for="person of persons.list"
+              show.bind='filter === "total" || person[filter]'
+              class="${person === persons.lastAdded ? 'last-added-list' : ''}">
+            <td class='name' scope="row">${person.name}</td>
+            <td repeat.for="entry of schema" scope="row" show.bind="entry.filter">
+              <checkbox 
+                  value.bind="person[entry.name]" 
+                  name.bind="entry.name"
+                  t="[aria]attribute.${entry.name}">
+              </checkbox> 
+            </td>
+            <td scope="row">
+              <inline-confirm
+                  handle.bind="person"
+                  action.bind="persons.removePerson"
+                  cancel-subscriber.bind="domClickSubscriber">
+                <span slot="action" class="delete fa fa-trash" t="[aria-label]action.delete"></span>
+                <span slot="question" t="confirm.delete">Are you sure?</span>            
+                <span slot="yes" t="confirm.yes">Yes</span>
+                <span slot="no" t="confirm.no">No</span>
+              </inline-confirm>
+            </td>
+          </tr>
+          <tr if.bind="filter !== 'total' && !persons.lastAdded[filter] && persons.lastAdded" 
+              class="last-added-hide">
+            <td scope="row">${persons.lastAdded.name}</td>
               <td repeat.for="entry of schema" scope="row" show.bind='entry.filter'>
-                <input type="checkbox" 
-                        aria-label="Checkbox for following text input"
-                        checked.two-way='persons.lastAdded[entry.name]'>
-              </td>
-              <td scope="row">x</td>
-            </tr>  
-          </tbody>
+              <input type="checkbox" 
+                      aria-label="Checkbox for following text input"
+                      checked.two-way='persons.lastAdded[entry.name]'>
+            </td>
+            <td scope="row">x</td>
+          </tr>  
+        </tbody>
       </table>
-      <div show.bind="persons.list.length !== 0 && filter !== 'total' && persons.count(filter) === 0  & signal:'person-list-change'"
-           class="alert alert-info"
-           role="alert"
-           t="info.no-person-selected">
-          No person selected. Please select a filter bellow.
+      <div if.bind="persons.list.length !== 0 
+                    && filter !== 'total' 
+                    && persons.count(filter) === 0 
+                    & signal:'person-list-change'"
+          class="alert alert-info"
+          role="alert"
+          t="info.no-person-selected">
+        No person selected. Please select a filter bellow.
       </div>
-      <div show.bind="persons.list.length === 0" 
-            class="alert alert-info"
-            role="alert"
-            t="info.no-person-added">
-          Please add your persons.
+      <div if.bind="persons.list.length === 0" 
+          class="alert alert-info"
+          role="alert"
+          t="info.no-person-added">
+        Please add your persons.
       </div>
     </div>
 </template>
