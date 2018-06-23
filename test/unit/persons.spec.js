@@ -53,7 +53,7 @@ describe('Persons', () => {
           next(e);
         }
       }, 1);
-    });
+    }, ()=>{});
   });
 
   it('sort(attribute: string) sorts persons', next => {

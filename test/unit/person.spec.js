@@ -26,9 +26,7 @@ describe('Person', () => {
       let person = new Person(data);
 
       expect(JSON.stringify(person)).toEqual(JSON.stringify(data));
-
-      next();
-    });
+    }, next);
   });
 
   it('constructor() sets missing defaults', next => {
@@ -37,9 +35,7 @@ describe('Person', () => {
 
       expect(person.power).toBeDefined();
       expect(person.power).toBe(false);
-
-      next();
-    });
+    }, next);
   });
 
   it('validates true with name set', next => {
@@ -47,12 +43,10 @@ describe('Person', () => {
       let controller = aurelia.container.get(ValidationController);
       let person = new Person({name: 'foo'});
 
-      controller.validate({ object: person }).then(result => {
+      return controller.validate({ object: person }).then(result => {
         expect(result.valid).toBe(true);
-
-        next();
       });
-    });
+    }, next);
   });
 
   it('validates false with no name set', next => {
@@ -60,11 +54,9 @@ describe('Person', () => {
       let controller = aurelia.container.get(ValidationController);
       let person = new Person();
 
-      controller.validate({ object: person }).then(result => {
+      return controller.validate({ object: person }).then(result => {
         expect(result.valid).toBe(false);
-
-        next();
       });
-    });
+    }, next);
   });
 });
