@@ -1,32 +1,32 @@
 /**
  * Component InlineConfirm
  *
- * Shows action, question, yes and no slots when clicking on action
- * and calls someAction(handle) on confirmation
- * and cancel-subscriber(eventHandler) on attached for cancellation event handling
+ * Clickable action with with confirmation
+ * Calls someAction(handle) on confirmation
+ * Calls cancel-subscriber(eventHandler) on attached for cancellation event handling
  *
  * @usage
- * <inline-confirm
- *     handle.bind="action.id"
+ * <action-confirm
  *     action.bind="someAction"
+ *     handle.bind="action.id"
  *     cancel-subscriber.bind="subscriber">
  *  <span slot="action">My action</span>
  *   <span slot="question">Are you sure?</span>
  *   <span slot="yes">Yes</span>
  *   <span slot="no">No</span>
- * </inline-confirm>
+ * </action-confirm>
  *
- * // example cancel subscriber function of the parent view model:
+ * // example cancel-subscriber function of the parent view model:
  *
  * domClickSubscriber = eventHandler => {
  *   this.cancelClickHandle = document.addEventListener('click', eventHandler, false);
  * }
  *
- * @bindable(oneTime) handle - unique handle for this confirmation
  * @bindable(oneTime) action - function which will be called with handle on confirmation. Use arrow function to bind 'this' if needed
+ * @bindable(oneTime) handle - unique handle for this confirmation
  * @bindable(oneTime) cancel-subscriber - subscriber function which will be called on attached with an event handler function for cancellations
  */
-export class InlineConfirm {
+export class ActionConfirm {
   static $view = {
     template:
       `<template>
@@ -45,10 +45,10 @@ export class InlineConfirm {
 
   static $resource() {
     return {
-      name: 'inline-confirm',
+      name: 'action-confirm',
       bindables: [
-        { name: 'handle', defaultBindingMode: 'oneTime' },
         { name: 'action', defaultBindingMode: 'oneTime' },
+        { name: 'handle', defaultBindingMode: 'oneTime' },
         { name: 'cancel-subscriber', defaultBindingMode: 'oneTime' },
       ],
     };
