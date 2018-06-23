@@ -65,6 +65,9 @@
 
 /* sidebar */
 .sidebar {
+  .stats-total, .stats-attribute {
+    white-space: nowrap;
+  }
   .count-number {
     margin-left: 10px;
   }
