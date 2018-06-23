@@ -10,7 +10,7 @@ export class PageObjectAddPerson {
     }
 
     for (const attr in attributes) {
-      if (attributes[attr]) element(by.name(`add-person-${attr}`)).click();
+      if (attributes[attr]) element(by.name(`check-attribute-${attr}`)).click();
       await browser.driver.sleep(200);
     }
 

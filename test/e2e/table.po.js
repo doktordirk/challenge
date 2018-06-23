@@ -16,7 +16,7 @@ export class PageObjectTable {
   async deletePersonAndConfirm() {
     await $$('table td .delete').first().click();
     await browser.driver.sleep(500);
-    return $('table td .confirm .yes').click();
+    return $('table td .confirm .confirm-yes').click();
   }
 
   async deletePersonAndCancel() {

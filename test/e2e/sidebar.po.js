@@ -10,10 +10,10 @@ export class PageObjectSidebar {
   }
 
   getTotalFromFirstLink() {
-    return $('.sidebar a').getText();
+    return $('.sidebar a .count-number').getText();
   }
 
   getAttributeCountFromLink(attribute) {
-    return $(`.sidebar a[href="#/${attribute}"]`).getText();
+    return $(`.sidebar a[href="#/${attribute}"] .count-number`).getText();
   }
 }
