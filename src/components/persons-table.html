@@ -7,8 +7,7 @@
         <tr>
           <th repeat.for="entry of schema"
               show.bind="entry.name !== 'id'"
-              click.delegate="persons.sort(entry.name, true)"
-              keypress.delegate="($event.charCode === 13 || $event.charCode === 32) && persons.sort(entry.name, true)"
+              click-enter.delegate="persons.sort(entry.name, true)"
               scope="col"
               class="header-${entry.name}"
               aria-label="Sort"

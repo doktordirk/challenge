@@ -30,8 +30,7 @@ export class ActionConfirm {
   static $view = {
     template:
       `<template>
-        <span click.delegate="confirmHandle=handle" 
-              keypress.delegate="($event.charCode === 13 || $event.charCode === 32) && (confirmHandle=handle)"
+        <span click-enter.delegate="confirmHandle=handle" 
               show.bind="confirmHandle !== handle" 
               class="confirm-action">
           <slot name="action">Action</slot>
@@ -45,13 +44,11 @@ export class ActionConfirm {
                 id="confirm-dialog">
             <slot name="question">Are you sure?</slot>
           </span>
-          <span click.delegate="action(handle)"
-                keypress.delegate="($event.charCode === 13 || $event.charCode === 32) && action(handle)"
+          <span click-enter.delegate="action(handle)"
                 class="confirm-yes" tabindex="0">
             <slot name="yes">Yes</slot>
           </span>
-          <span click.delegate="confirmHandle=undefined"
-                keypress.delegate="($event.charCode === 13 || $event.charCode === 32) && (confirmHandle=undefined)"
+          <span click-enter.delegate="confirmHandle=undefined"
                 class="confirm-no" tabindex="0">
             <slot name="no">No</slot>
           </span>
