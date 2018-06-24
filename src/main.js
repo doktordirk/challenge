@@ -17,12 +17,12 @@ export function configure(aurelia) {
 
       return instance.setup({
         backend: {
-          loadPath: './resources/locale/{{lng}}/{{ns}}.json'
+          loadPath: './resources/locale/{{lng}}/{{ns}}.json',
         },
         lng: 'en',
         attributes: ['t'],
         fallbackLng: 'en',
-        debug: environment.debug
+        debug: environment.debug,
       }).then(() => {
         const router = aurelia.container.get(AppRouter);
         router.transformTitle = title => instance.tr(`attribute.${title}`);

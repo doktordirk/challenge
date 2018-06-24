@@ -22,7 +22,7 @@ export class App {
       name: 'total',
       title: 'total',
       moduleId: PLATFORM.moduleName('./components/persons-table'),
-      nav: true
+      nav: true,
     }];
 
     Person.Schema.map(entry => {
@@ -32,7 +32,7 @@ export class App {
           name: entry.name,
           title: entry.name,
           moduleId: PLATFORM.moduleName('./components/persons-table'),
-          nav: true
+          nav: true,
         });
       }
     });

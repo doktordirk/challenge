@@ -18,7 +18,7 @@ module.exports = {
 
       lint: {
         default: 'eslint src',
-        fix: 'eslint --fix'
+        fix: 'eslint src --fix'
       },
       all: concurrent({
         browser: series.nps('test.karma'),
