@@ -51,11 +51,13 @@
             class="last-added-hide">
           <td scope="row">${persons.lastAdded.name}</td>
           <td repeat.for="entry of schema" show.bind='entry.filter'>
-            <input type="checkbox" 
-                    aria-label="Checkbox for following text input"
-                    checked.two-way='persons.lastAdded[entry.name]'>
+            <checkbox 
+                value.one-time="persons.lastAdded[entry.name]" 
+                name.one-time="entry.name"
+                t="[aria]attribute.${entry.name}">
+            </checkbox>
           </td>
-          <td >x</td>
+          <td>x</td>
         </tr>  
       </tbody>
     </table>

@@ -6,13 +6,11 @@
  *    value.bind="checked"
  *    name="my-attribute"
  *    title="My attribute"
- *    aria="My attribute">
  * </person-attribute-checkbox>
  *
  * @bindable(twoWay) value - the checked status
  * @bindable(oneTime) name - checkbox name for the label
  * @bindable(oneTime) title - if present will display a label
- * @bindable(oneTime) aria - the checkbox's aria-label, falls back to 'title'
  */
 export class Checkbox {
   static $view = {
@@ -34,7 +32,6 @@ export class Checkbox {
         { name: 'value', defaultBindingMode: 'twoWay' },
         { name: 'name', defaultBindingMode: 'oneTime' },
         { name: 'title', defaultBindingMode: 'oneTime' },
-        { name: 'aria', defaultBindingMode: 'oneTime' },
       ],
     };
   }
