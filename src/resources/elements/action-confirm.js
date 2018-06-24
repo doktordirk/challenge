@@ -80,7 +80,8 @@ export class ActionConfirm {
 
   attached() {
     const eventHandler = (event) => {
-      if (event.target.getAttribute('slot') !== 'action') {
+      if (event.target.getAttribute('slot') !== 'action' &&
+          event.keyCode !== 9) {
         this.confirmHandle = false;
       }
     };

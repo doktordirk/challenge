@@ -21,8 +21,7 @@ export class Checkbox {
         <div class="checkbox">
           <input  id="check-attribute-\${name}"
                   type="checkbox"
-                  checked.two-way="value"
-                  keypress.delegate="($event.charCode === 13) && (value=!value)">
+                  checked.two-way="value">
           <label if.bind="title" for="check-attribute-\${name}">\${title}</label>
         </div>
       </template>`,
