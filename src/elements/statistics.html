@@ -1,16 +1,20 @@
 <template>
-  <h3 t="title.sidebar">Statistics</h3>
-  <div class="stats-total">
-    <a route-href="route: total">
-      <span class="count-label" t="attribute.total">Total</span>:
-      <span class="count-number">${persons.list.length}</span>
-    </a>
-  </div>
-  <div repeat.for="attribute of attributes" class="stats-attribute" 
-      show.bind="persons.count(attribute.name) !== 0 & signal:'person-list-change'">
-    <a route-href="route.bind: attribute.name">
-      <span class="count-label" t="attribute.${attribute.name}">${attribute.name}</span>:
-      <span class="count-number">${persons.count(attribute.name) & signal:'person-list-change'}</span>
-    </a>
+  <div role="complementary" aria-labelledby="title-sidebar">
+    <h2 t="title.sidebar" id="title-sidebar">Statistics</h2>
+    <ul>
+      <li class="stats-total">
+        <a route-href="route: total">
+          <span class="count-label" t="attribute.total">Total</span>:
+          <span class="count-number">${persons.list.length}</span>
+        </a>
+      </li>
+      <li repeat.for="attribute of attributes" class="stats-attribute" 
+          show.bind="persons.count(attribute.name) !== 0 & signal:'person-list-change'">
+        <a route-href="route.bind: attribute.name">
+          <span class="count-label" t="attribute.${attribute.name}">${attribute.name}</span>:
+          <span class="count-number">${persons.count(attribute.name) & signal:'person-list-change'}</span>
+        </a>
+      </div>
+    </ul>
   </div>
 </template>

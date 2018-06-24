@@ -1,7 +1,8 @@
 {
   "action": {
     "add": "Add",
-    "delete": "Delete"
+    "delete": "Delete",
+    "sort": "Sort"
   },
   "confirm": {
     "delete": "Are you sure?",
@@ -17,8 +18,11 @@
     "genius": "Genius"
   },
   "title": {
+    "main": "Person management",
     "add-person": "Add new person",
-    "sidebar": "Statistics"
+    "table": "Person table",
+    "sidebar": "Statistics",
+    "filters": "Filters"
   },
   "info": {
     "no-person-selected": "No person selected. Please select a filter bellow.",

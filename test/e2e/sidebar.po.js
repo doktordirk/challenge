@@ -2,7 +2,7 @@ import { $ } from '../../node_modules/protractor/built/index';
 
 export class PageObjectSidebar {
   getTitle() {
-    return $('.sidebar h3').getText();
+    return $('.sidebar h2').getText();
   }
 
   getSidebar() {

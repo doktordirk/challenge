@@ -19,10 +19,10 @@ export class Checkbox {
     template:
       `<template>
         <div class="checkbox">
-          <input  name="check-attribute-\${name}"
+          <input  id="check-attribute-\${name}"
                   type="checkbox"
-                  aria-label="\${aria || title || name}" 
-                  checked.two-way="value">
+                  checked.two-way="value"
+                  keypress.delegate="($event.charCode === 13) && (value=!value)">
           <label if.bind="title" for="check-attribute-\${name}">\${title}</label>
         </div>
       </template>`,

@@ -1,8 +1,9 @@
 @import '~bootstrap/scss/bootstrap';
 @import "~bootstrap/scss/mixins";
 
-
-.hide {display: none}
+h1 {
+  text-align: center
+}
 
 /* add person container */
 .add-person {
@@ -65,6 +66,12 @@
 
 /* sidebar */
 .sidebar {
+  ul {
+    padding-left: 5px;
+    li {
+      display: block;
+    }
+  }
   .stats-total, .stats-attribute {
     white-space: nowrap;
   }

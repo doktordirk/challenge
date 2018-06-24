@@ -42,5 +42,6 @@ export class Overview {
 
   domClickSubscriber = (eventHandler) => {
     this.cancelClickSubscription = this.events.subscribe('click', eventHandler, false);
+    this.cancelClickSubscription = this.events.subscribe('keypress', eventHandler, false);
   }
 }

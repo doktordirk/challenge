@@ -10,7 +10,7 @@
  *     action.bind="someAction"
  *     handle.bind="action.id"
  *     cancel-subscriber.bind="subscriber">
- *  <span slot="action">My action</span>
+ *   <span slot="action">My action</span>
  *   <span slot="question">Are you sure?</span>
  *   <span slot="yes">Yes</span>
  *   <span slot="no">No</span>
@@ -30,15 +30,31 @@ export class ActionConfirm {
   static $view = {
     template:
       `<template>
-        <span click.trigger="confirmHandle=handle" 
+        <span click.delegate="confirmHandle=handle" 
+              keypress.delegate="($event.charCode === 13 || $event.charCode === 32) && (confirmHandle=handle)"
               show.bind="confirmHandle !== handle" 
               class="confirm-action">
           <slot name="action">Action</slot>
         </span>
-        <span class="confirm" show.bind="confirmHandle === handle" >
-          <span class="confirm-question"><slot name="question">Are you sure?</slot></span>
-          <span click.delegate="action(handle)" class="confirm-yes"><slot name="yes">Yes</slot></span>
-          <span click.delegate="confirmHandle=undefined" class="confirm-no"><slot name="no">No</slot></span>
+        <span class="confirm"
+              show.bind="confirmHandle === handle"
+              role="alertdialog"
+              aria-label="Confirm"
+              aria-describedby="confirm-dialog">
+          <span class="confirm-question"
+                id="confirm-dialog">
+            <slot name="question">Are you sure?</slot>
+          </span>
+          <span click.delegate="action(handle)"
+                keypress.delegate="($event.charCode === 13 || $event.charCode === 32) && action(handle)"
+                class="confirm-yes" tabindex="0">
+            <slot name="yes">Yes</slot>
+          </span>
+          <span click.delegate="confirmHandle=undefined"
+                keypress.delegate="($event.charCode === 13 || $event.charCode === 32) && (confirmHandle=undefined)"
+                class="confirm-no" tabindex="0">
+            <slot name="no">No</slot>
+          </span>
         </span>
       </template>`,
   }

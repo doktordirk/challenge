@@ -43,10 +43,13 @@ Other than the required functionally, nothing can be considered fully done.
 * Input validation: **partially done**
   - (+) validates min and max name length with feedback
   - (-) does not validate uniqueness of names
-* Accessibility: **partially done**
-  - (+) some use of aria attributes
-  - (-) screen reader friendliness not tested 
-* Browser-compatibility: **not tested**
+* Accessibility: **done**
+  - (+) use of semantic native elements and of aria attributes
+  - (+) keypress space & return available for click actions
+  - (+) screen reader friendliness tested with firefox plugins (Visual Aria, Tota11y, Wave)
+* Browser-compatibility: **partially done**
+  - (+) tested: current Chrome, Firefox, Opera, Edge
+  - (-) untested: Safari, mobile browsers
 * Responsiveness: **partially done**
   - (+) elements arrange for different screen sizes
   - (-) table doesn't fit if bellow 500px screen width

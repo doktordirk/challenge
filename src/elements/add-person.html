@@ -1,20 +1,20 @@
 <template>
   <require from="./checkbox"></require>
 
-  <div class="add-person">
-  <h3 t="title.add-person">Add new person</h3>
+  <div class="add-person" role="form" aria-labelledby="title-add">
+  <h2 t="title.add-person" id="title-add">Add new person</h2>
     <div class="container">
       <div class="row">
         <div class="item grow col">
           <input type="text"
                   name="add-person-name"
                   value.bind="person.name" 
-                  placeholder="name" 
-                  aria-placeholder="name"
+                  placeholder="Name"            
+                  aria-label="Name"
                   required="true"
-                  t="[placeholder]attribute.name;[aria-placeholder]attribute.name">
-          <div class="alert alert-primary ${controller.errors.length ? '': 'hide'}" 
-               role="alert">
+                  t="[placeholder]attribute.name;[aria-label]attribute.name">
+          <div class="alert alert-primary" if.bind="controller.errors.length !== 0" 
+               role="alert" aria-live="assertive">
             <div repeat.for="error of controller.errors">
               ${error.message}      
             </div>
@@ -30,11 +30,12 @@
                   t="[title]attribute.${entry.name}">
               </checkbox>    
             </div>
-            <div class="">
+            <div class="button">
               <button type="submit"
                       name="add-person-submit"
                       click.delegate="add()"
-                      t="action.add">
+                      t="action.add"
+                      role="button">
                 Add
             </button>
             </div>

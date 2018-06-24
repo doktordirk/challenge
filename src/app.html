@@ -3,6 +3,7 @@
   <require from='./elements/statistics'></require>
 
     <div class='body'>
+        <h1 t="title.main">Person management</h1>
         <div class='container'>
           <div class='row'>
             <div class='sidebar col-sm-2 order-last'>
@@ -11,12 +12,12 @@
             <div class='main col'>
                 <add-person></add-person>
                 <router-view></router-view>
-                <div class='router'>
+                <div class='router' role="navigation" t="[aria-label]title.filters">
                   <ul>
                       <li repeat.for="nav of router.navigation" 
                           show.bind="(nav.title==='total' && persons.list.length !== 0) || persons.count(nav.title) & signal:'person-list-change'"
                           class="${nav.isActive ? 'active' : ''}">
-                          <span class="separator" if.bind="nav.title!=='total'">|</span>
+                          <span class="separator" if.bind="nav.title!=='total'" aria-hidden="true">|</span>
                           <a href.bind="nav.href" t="attribute.${nav.title}">${nav.title}</a>                 
                       </li>
                   </ul>

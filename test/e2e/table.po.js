@@ -22,6 +22,6 @@ export class PageObjectTable {
   async deletePersonAndCancel() {
     await $$('table td .delete').first().click();
     await browser.driver.sleep(500);
-    return $('.sidebar h3').click();
+    return $('.sidebar h2').click();
   }
 }

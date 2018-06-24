@@ -1,6 +1,6 @@
 export class PageObjectAddPerson {
   getTitle() {
-    return $('add-person h3').getText();
+    return $('add-person h2').getText();
   }
 
   async addPerson(name, attributes) {
