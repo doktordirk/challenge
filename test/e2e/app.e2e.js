@@ -119,10 +119,9 @@ describe('base app', function() {
   it('add new person with defaults attributes and default name sorting and update views', async() => {
     await poAddPerson.addPerson('foo');
     await browser.driver.sleep(500);
-    let error = await poAddPerson.getError();
+
     let names = await poTable.getPersonNames();
 
-    expect(error).toBe('');
     expect(await poSidebar.getTotalFromFirstLink()).toBe('4');
     expect(await poSidebar.getAttributeCountFromLink('rich')).toBe('1');
     expect(await poSidebar.getAttributeCountFromLink('genius')).toBe('2');
@@ -134,10 +133,9 @@ describe('base app', function() {
   it('add new person with set attributes and default name sorting and update views', async() => {
     await poAddPerson.addPerson('bar', {genius: true, power: true, rich: true});
     await browser.driver.sleep(500);
-    let error = await poAddPerson.getError();
+
     let names = await poTable.getPersonNames();
 
-    expect(error).toBe('');
     expect(await poSidebar.getTotalFromFirstLink()).toBe('4');
     expect(await poSidebar.getAttributeCountFromLink('rich')).toBe('2');
     expect(await poSidebar.getAttributeCountFromLink('genius')).toBe('3');
