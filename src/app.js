@@ -21,7 +21,7 @@ export class App {
       route: ['', 'total'],
       name: 'total',
       title: 'total',
-      moduleId: PLATFORM.moduleName('./elements/persons-table'),
+      moduleId: PLATFORM.moduleName('./components/persons-table'),
       nav: true
     }];
 
@@ -31,7 +31,7 @@ export class App {
           route: entry.name,
           name: entry.name,
           title: entry.name,
-          moduleId: PLATFORM.moduleName('./elements/persons-table'),
+          moduleId: PLATFORM.moduleName('./components/persons-table'),
           nav: true
         });
       }
