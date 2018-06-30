@@ -1,143 +1,163 @@
 @import '~bootstrap/scss/bootstrap';
 @import "~bootstrap/scss/mixins";
 
-h1 {
-  text-align: center
+
+body {
+  display: grid;
+  grid-template-columns: auto 150px;
+  grid-template-rows: auto auto;
+  grid-template-areas: 
+    "header header"
+    "main sidebar";
 }
 
-/* add person container */
-.add-person {
-  .item {
-    margin: 5px;
-    padding: 0;
-  }
-  .grow {
-    flex-grow: 1;
-    input {
-      width: 100%;
-      min-width: 100px;
-      margin: 0.5rem;
-    }
-  }
-  .checkboxes {
-    display: flex;
-  }
-  .checkbox {
-    white-space: nowrap;
-    margin: 0.5rem;
-  }
-
-  button {
-    border-radius: 6px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
-    background-color: white;
-    margin: 0.5rem;
-  }
-
-  button:hover {
-    background-color: lightgray;
-  }
-
-  .alert {
-    animation: fade-out 2s 2s both;
+@media (max-width: 650px) {
+  body {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+      "header"
+      "main"
+      "sidebar";
   }
 }
 
-/* router */
-.router ul {
+header {
+  grid-area: header;
+  background-color: aquamarine;
+  h1 {
+    text-align: center
+  }
+}
+
+nav.router {
+  background-color: bisque;
   padding: 0px;
-
-  li {
+  a {
     display: inline-block;
     margin: 10px;
-  }
-
-  li.active a {
-    color: black;
-    text-decoration: none;
-  }
-
-  .separator {
-    margin-right: 15px;
+    .active {
+      color: black;
+      text-decoration: none;
+    }
   }
 }
 
-/* sidebar */
-.sidebar {
+aside.sidebar {
+  grid-area: sidebar;
+  background-color: orange;
   ul {
     padding-left: 5px;
     li {
       display: block;
     }
-  }
-  .stats-total, .stats-attribute {
-    white-space: nowrap;
-  }
-  .count-number {
-    margin-left: 10px;
+  
+    .stats-total, .stats-attribute {
+      white-space: nowrap;
+    }
+    .count-number {
+      margin-left: 10px;
+    }
   }
 }
 
-/* person-table */
-.person-table {
-  /* person-table-head */
-  th {
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;  
+main {
+  grid-area: main;
+  background-color: greenyellow;
+  section.add-section {
+    .form-add {
+    }
 
-    span.fa {
-      margin-right: 0.5em;
+    .area-attributes {
+      grid-area: attributes;
+      background-color: chocolate;
+    }
+
+    .area-name input {
+      min-width: 100px;
+      margin: 0.5em;
+    }
+
+    checkbox {
+      margin: 0.5em;
+    }
+    .checkbox {
+      white-space: nowrap;
+      label {
+        margin: 0px;
+      }
+    }
+  
+    button {
+      border-radius: 6px;
+      border-style: solid;
+      border-width: 2px;
+      border-color: black;
+      background-color: white;
+      margin: 0.5em;
+    }
+  
+    button:hover {
+      background-color: lightgray;
+    }
+  
+    .alert {
+      animation: fade-out 2s 2s both;
     }
   }
-  th:hover {
-    background-color: lightgray;
-  }
 
-  /* person-table-row */
-  .last-added-list {
-    animation: fade-color 1s 1s backwards;
-  }
-
-  .last-added-hide {
-    background-color: coral;
-    animation: fade-out 1s 1s both;
-  }
-
-  /* person-table-cell */
-  .name {
-    width: 200px;
-    max-width: 200px;
-    overflow: hidden
-  }
-
-  .delete, .confirm {
-    min-width: 120px;
-  }
-
-  .confirm .confirm-question {
-    white-space: nowrap;
-  }
-
-  .delete, .confirm span {
-    cursor: default;
-  }
-
-  .confirm-yes, .confirm-no {
-    border-radius: 6px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
-    background-color: white;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin: 3px;
-  }
-
-  .confirm .delete:hover {
-    background-color: lightgray;
+  section .person-table {
+    overflow-x: auto;
+    max-width: 100vw;
+    th {
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;  
+      span.fa {
+        margin-right: 0.5em;
+      }
+      :hover {
+        background-color: lightgray;
+      }
+    }
+    
+    tr {
+      .last-added-list {
+        animation: fade-color 1s 1s backwards;
+      }
+      .last-added-hide {
+        background-color: coral;
+        animation: fade-out 1s 1s both;
+      }
+    }
+    
+    td {
+      .name {
+        width: 200px;
+        max-width: 200px;
+        overflow: hidden
+      }
+      .delete, .confirm {
+        min-width: 120px;
+        cursor: default;
+      }
+      .confirm-question {
+        white-space: nowrap;
+      }
+      .confirm-yes, .confirm-no {
+        border-radius: 6px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: black;
+        background-color: white;
+        padding-left: 5px;
+        padding-right: 5px;
+        margin: 3px;
+      }
+      .confirm .delete:hover {
+        background-color: lightgray;
+      }
+    }
   }
 }
 

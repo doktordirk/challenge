@@ -15,7 +15,6 @@ export class App {
     this.persons = persons;
   }
 
-
   configureRouter(config, router) {
     let routes = [{
       route: ['', 'total'],

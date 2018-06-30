@@ -44,7 +44,7 @@ export class ActionConfirm {
                 id="confirm-dialog">
             <slot name="question">Are you sure?</slot>
           </span>
-          <span click-enter.delegate="action(handle)"
+          <span click-enter.delegate="action({person: handle})"
                 class="confirm-yes" tabindex="0">
             <slot name="yes">Yes</slot>
           </span>
@@ -82,6 +82,6 @@ export class ActionConfirm {
         this.confirmHandle = false;
       }
     };
-    this['cancel-subscriber'](eventHandler);
+    this['cancel-subscriber']({eventHandler});
   }
 }

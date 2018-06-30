@@ -1,6 +1,6 @@
 <template>
-  <div role="main" t="[aria-label]title.table">
-    <table class="table table-hover person-table"       
+  <div t="[aria-label]title.table" class="person-table">
+    <table class="table table-hover"       
           id="person-table"
           if.bind="persons.list.length !== 0">
       <thead>
@@ -36,9 +36,9 @@
           </td>
           <td>
             <action-confirm
-                action.bind="persons.removePerson"
+                action.call="persons.removePerson(person)"
                 handle.bind="person"
-                cancel-subscriber.bind="domClickSubscriber">
+                cancel-subscriber.call="domClickSubscriber(eventHandler)">
               <span slot="action" class="delete fa fa-trash" t="[aria-label]action.delete" role="button" tabindex="0"></span>
               <span slot="question" t="confirm.delete">Are you sure?</span>            
               <span slot="yes" t="confirm.yes" role="button">Yes</span>

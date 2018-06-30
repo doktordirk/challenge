@@ -1,47 +1,37 @@
 <template>
-  <div class="add-person" role="form" aria-labelledby="title-add">
-  <h2 t="title.add-person" id="title-add">Add new person</h2>
-    <form>
-      <div class="container">
-        <div class="row">
-          <div class="item grow col">
-            <input type="text"
-                    name="add-person-name"
-                    value.bind="person.name" 
-                    placeholder="Name"            
-                    aria-label="Name"
-                    required="true"
-                    t="[placeholder]attribute.name;[aria-label]attribute.name">
-            <div class="alert alert-primary" if.bind="controller.errors.length !== 0" 
-                role="alert" aria-live="assertive">
-              <div repeat.for="error of controller.errors">
-                ${error.message}      
-              </div>
-            </div>
-          </div>
-          <div class="item col">
-            <div class="checkboxes">
-              <div repeat.for="entry of schema"
-                  show.bind="entry.filter">
-                <checkbox 
-                    value.bind="person[entry.name]" 
-                    name.bind="entry.name"
-                    t="[title]attribute.${entry.name}">
-                </checkbox>    
-              </div>
-              <div class="button">
-                <button type="submit"
-                        name="add-person-submit"
-                        click.delegate="add()"
-                        t="action.add"
-                        role="button">
-                  Add
-              </button>
-              </div>
-            </div>           
+    <h2 class="area-title" t="title.add-person" id="title-add">Add new person</h2>
+    <form class="form-add">
+      <span class="area-name">
+        <input type="text"
+                name="add-person-name"
+                value.bind="person.name" 
+                placeholder="Name"            
+                aria-label="Name"
+                required="true"
+                t="[placeholder]attribute.name;[aria-label]attribute.name">
+        <div class="alert alert-primary" if.bind="controller.errors.length !== 0" 
+              role="alert" aria-live="assertive">
+          <div repeat.for="error of controller.errors">
+            ${error.message}      
           </div>
         </div>
-      </div>
+      </span>
+      <span class="area-attributes">
+        <checkbox repeat.for="entry of schema"
+            show.bind="entry.filter"
+            value.bind="person[entry.name]" 
+            name.bind="entry.name"
+            t="[title]attribute.${entry.name}">
+        </checkbox>    
+      </span>
+      <button class="area-submit"
+              type="submit"
+              name="add-person-submit"
+              click.delegate="add()"
+              t="action.add"
+              role="button">
+        Add
+      </button>          
     </form>
   </div>
 </template>

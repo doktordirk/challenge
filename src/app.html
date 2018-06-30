@@ -2,28 +2,28 @@
   <require from="./components/add-person"></require>
   <require from='./components/statistics'></require>
 
-    <div class='body'>
-        <h1 t="title.main">Person management</h1>
-        <div class='container'>
-          <div class='row'>
-            <div class='sidebar col-sm-2 order-last'>
-                <statistics></statistics>
-            </div>
-            <div class='main col'>
-                <add-person></add-person>
-                <router-view></router-view>
-                <div class='router' role="navigation" t="[aria-label]title.filters">
-                  <ul>
-                      <li repeat.for="nav of router.navigation" 
-                          show.bind="(nav.title==='total' && persons.list.length !== 0) || persons.count(nav.title) & signal:'person-list-change'"
-                          class="${nav.isActive ? 'active' : ''}">
-                          <span class="separator" if.bind="nav.title!=='total'" aria-hidden="true">|</span>
-                          <a href.bind="nav.href" t="attribute.${nav.title}">${nav.title}</a>                 
-                      </li>
-                  </ul>
-                </div>
-            </div>
-          </div>
-        </div>
-    </div>
+  <header>
+    <h1  t="title.main">Person management</h1>
+  </header>
+  <main>
+    <article>
+      <section class="add-section">
+        <add-person></add-person>
+      </section>
+      <section class="table-section">
+        <router-view></router-view>
+      </section>
+    </article>
+    <nav class='router' t="[aria-label]title.filters">              
+      <span repeat.for="nav of router.navigation" 
+          show.bind="(nav.title==='total' && persons.list.length !== 0) || persons.count(nav.title) & signal:'person-list-change'"
+          class="${nav.isActive ? 'active' : ''}">
+          <span class="separator" if.bind="nav.title!=='total'" aria-hidden="true">|</span>
+          <a href.bind="nav.href" t="attribute.${nav.title}">${nav.title}</a>                 
+      </span>  
+    </nav>
+  </main>
+  <aside class="sidebar">
+    <statistics></statistics>
+  </aside>
 </template>
