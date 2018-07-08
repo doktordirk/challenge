@@ -1,7 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
@@ -53,10 +53,12 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       {
         test: /\.css$/i,
         issuer: [{ not: [{ test: /\.html$/i }] }],
-        use: extractCss ? ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: cssRules
-        }) : ['style-loader', ...cssRules],
+        use: extractCss ? [
+          {
+            loader: MiniCssExtractPlugin.loader
+          },
+          'css-loader'
+        ] : ['style-loader', ...cssRules]
       },
       {
         test: /\.css$/i,
@@ -65,7 +67,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         // because Aurelia would try to require it again in runtime
         use: cssRules
       },
-      { 
+      {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
         issuer: /\.[tj]s$/i
@@ -122,7 +124,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     new CopyWebpackPlugin([
       {from: 'src/resources/locale/', to: 'resources/locale/'}
     ]),
-    ...when(extractCss, new ExtractTextPlugin({
+    ...when(extractCss, new MiniCssExtractPlugin({
       filename: production ? '[contenthash].css' : '[id].css',
       allChunks: true
     })),
