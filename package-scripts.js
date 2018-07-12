@@ -1,5 +1,5 @@
-const {series, crossEnv, concurrent, rimraf} = require('nps-utils')
-const {config: {port : E2E_PORT}} = require('./test/protractor.conf')
+const {series, crossEnv, concurrent, rimraf} = require('nps-utils');
+const {config: {port: E2E_PORT}} = require('./test/protractor.conf');
 
 module.exports = {
   scripts: {
@@ -13,17 +13,17 @@ module.exports = {
           'karma start test/karma.conf.js'
         ),
         watch: 'karma start test/karma.conf.js --auto-watch --no-single-run',
-        debug: 'karma start test/karma.conf.js --auto-watch --no-single-run --debug'
+        debug: 'karma start test/karma.conf.js --auto-watch --no-single-run --debug',
       },
 
       lint: {
         default: 'eslint src',
-        fix: 'eslint src --fix'
+        fix: 'eslint src --fix',
       },
       all: concurrent({
         browser: series.nps('test.karma'),
-        lint: 'nps test.lint'
-      })
+        lint: 'nps test.lint',
+      }),
     },
     e2e: {
       default: concurrent({
@@ -79,14 +79,14 @@ module.exports = {
             'webpack.build.production',
             'serve'
           ),
-        }
+        },
       },
       server: {
-        default: `webpack-dev-server -d --devtool '#source-map' --inline --env.server`,
-        extractCss: `webpack-dev-server -d --devtool '#source-map' --inline --env.server --env.extractCss`,
-        hmr: `webpack-dev-server -d --devtool '#source-map' --inline --hot --env.server`
+        default: 'webpack-dev-server -d --devtool \'#source-map\' --inline --env.server',
+        extractCss: 'webpack-dev-server -d --devtool \'#source-map\' --inline --env.server --env.extractCss',
+        hmr: 'webpack-dev-server -d --devtool \'#source-map\' --inline --hot --env.server',
       },
     },
     serve: 'http-server dist --cors',
   },
-}
+};
