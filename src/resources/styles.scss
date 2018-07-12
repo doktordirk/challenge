@@ -33,11 +33,13 @@ header {
 nav.router {
   background-color: bisque;
   padding: 0px;
+  span.active a {
+    color: black;
+  }
   a {
     display: inline-block;
     margin: 10px;
     .active {
-      color: black;
       text-decoration: none;
     }
   }
