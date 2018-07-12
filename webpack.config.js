@@ -1,7 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
@@ -113,6 +116,10 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     new ModuleDependenciesPlugin({
       'aurelia-testing': [ './compile-spy', './view-spy' ],
     }),
+    ...when(extractCss, new MiniCssExtractPlugin({
+      filename: production ? '[contenthash].css' : '[id].css',
+      allChunks: true,
+    })),
     new HtmlWebpackPlugin({
       template: 'index.ejs',
       minify: production ? {
@@ -131,14 +138,19 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         // available in index.ejs //
         title, server, baseUrl,
       },
+      prefetch: ['resources/locale/en/translation.json'],
     }),
+    new ResourceHintWebpackPlugin(),
+    ...when(production, new OptimizeCssAssetsPlugin({
+      cssProcessorOptions: {
+        safe: true,
+        discardComments: { removeAll: true },
+      },
+    })),
     new CopyWebpackPlugin([
       {from: 'src/resources/locale/', to: 'resources/locale/'},
     ]),
-    ...when(extractCss, new MiniCssExtractPlugin({
-      filename: production ? '[contenthash].css' : '[id].css',
-      allChunks: true,
-    })),
+    ...when(production, new CompressionPlugin()),
     ...when(production, new CopyWebpackPlugin([
       { from: 'static/favicon.ico', to: 'favicon.ico' }])),
     ...when(analyze, new BundleAnalyzerPlugin()),
