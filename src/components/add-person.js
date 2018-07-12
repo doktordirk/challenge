@@ -26,18 +26,17 @@ export class AddPerson {
     }
   }
 
-  add() {
+  async add() {
     this.person.name = (this.person.name || '').trim();
 
-    this.controller.validate({ object: this.person })
-      .then(result => {
-        if (result.valid) {
-          this.persons.addPerson(this.person);
-          this.reset();
-          return;
-        }
+    let result = await this.controller.validate({ object: this.person });
 
-        setTimeout(() => this.controller.errors = [], 3500);
-      });
+    if (result.valid) {
+      this.persons.addPerson(this.person);
+      this.reset();
+      return;
+    }
+
+    setTimeout(() => this.controller.errors = [], 3500);
   }
 }
