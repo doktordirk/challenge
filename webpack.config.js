@@ -29,7 +29,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     modules: [srcDir, 'node_modules'],
   },
   entry: {
-    app: ['aurelia-bootstrapper']
+    app: ['aurelia-bootstrapper'],
   },
   mode: production ? 'production' : 'development',
   output: {
@@ -37,13 +37,24 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     publicPath: baseUrl,
     filename: production ? '[name].[chunkhash].bundle.js' : '[name].[hash].bundle.js',
     sourceMapFilename: production ? '[name].[chunkhash].bundle.map' : '[name].[hash].bundle.map',
-    chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
+    chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js',
   },
   performance: { hints: false },
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all',
+        },
+      },
+    },
+  },
   devServer: {
     contentBase: outDir,
     // serve index.html for all 404 (required for push-state)
-    historyApiFallback: true
+    historyApiFallback: true,
   },
   devtool: production ? 'nosources-source-map' : 'cheap-module-eval-source-map',
   module: {
@@ -55,27 +66,27 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         issuer: [{ not: [{ test: /\.html$/i }] }],
         use: extractCss ? [
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: MiniCssExtractPlugin.loader,
           },
-          'css-loader'
-        ] : ['style-loader', ...cssRules]
+          'css-loader',
+        ] : ['style-loader', ...cssRules],
       },
       {
         test: /\.css$/i,
         issuer: [{ test: /\.html$/i }],
         // CSS required in templates cannot be extracted safely
         // because Aurelia would try to require it again in runtime
-        use: cssRules
+        use: cssRules,
       },
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
-        issuer: /\.[tj]s$/i
+        issuer: /\.[tj]s$/i,
       },
       {
         test: /\.scss$/,
         use: ['css-loader', 'sass-loader'],
-        issuer: /\.html?$/i 
+        issuer: /\.html?$/i,
       },
       { test: /\.html$/i, loader: 'html-loader' },
       { test: /\.js$/i, loader: 'babel-loader', exclude: nodeModulesDir,
@@ -90,17 +101,17 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       { test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'url-loader', options: { limit: 10000, mimetype: 'application/font-woff' } },
       // load these fonts normally, as files:
       { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
-    ]
+    ],
   },
   plugins: [
     new AureliaPlugin({
-      features: { svg: false }
+      features: { svg: false },
     }),
     new ProvidePlugin({
-      'Promise': 'bluebird'
+      'Promise': 'bluebird',
     }),
     new ModuleDependenciesPlugin({
-      'aurelia-testing': [ './compile-spy', './view-spy' ]
+      'aurelia-testing': [ './compile-spy', './view-spy' ],
     }),
     new HtmlWebpackPlugin({
       template: 'index.ejs',
@@ -114,22 +125,22 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         minifyJS: true,
         removeScriptTypeAttributes: true,
         removeStyleLinkTypeAttributes: true,
-        ignoreCustomFragments: [/\${.*?}/g]
+        ignoreCustomFragments: [/\${.*?}/g],
       } : undefined,
       metadata: {
         // available in index.ejs //
-        title, server, baseUrl
-      }
+        title, server, baseUrl,
+      },
     }),
     new CopyWebpackPlugin([
-      {from: 'src/resources/locale/', to: 'resources/locale/'}
+      {from: 'src/resources/locale/', to: 'resources/locale/'},
     ]),
     ...when(extractCss, new MiniCssExtractPlugin({
       filename: production ? '[contenthash].css' : '[id].css',
-      allChunks: true
+      allChunks: true,
     })),
     ...when(production, new CopyWebpackPlugin([
       { from: 'static/favicon.ico', to: 'favicon.ico' }])),
-    ...when(analyze, new BundleAnalyzerPlugin())
-  ]
+    ...when(analyze, new BundleAnalyzerPlugin()),
+  ],
 });
