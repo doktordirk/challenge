@@ -5,6 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "node",
+      "request": "launch",
+      "name":"launch webpack",
+      "program": "${workspaceFolder}/node_modules/webpack/bin/webpack.js",
+      "args": ["--env", "prod", "--config", "./webpack.config.js"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name":"launch webpack-dev-server",
+      "program": "${workspaceFolder}/node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+      "args": ["--watch", "--env", "prod", "--compress", "--config", "./webpack.config.js"]
+    },
+    {
       "name": "Chrome",
       "type": "chrome",
       "request": "launch",
