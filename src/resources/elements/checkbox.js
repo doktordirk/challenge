@@ -21,7 +21,6 @@ export class Checkbox {
                   type="checkbox"
                   checked.two-way="value">
           <label if.bind="title" for="check-attribute-\${name}">\${title}</label>
-
         </span>
       </template>`,
   }
@@ -33,25 +32,7 @@ export class Checkbox {
         { name: 'value', defaultBindingMode: 'twoWay' },
         { name: 'name', defaultBindingMode: 'oneTime' },
         { name: 'title', defaultBindingMode: 'oneTime' },
-        { name: 'callback' },
-        { name: 'callback2' }, 
       ],
     };
-  }
-
-  bind() {
-    //console.log('bind', this, !!this.callback, !!this.callback2)
-    
-    if (this.callback) this.callback({x:'tt'})
-    if (this.callback2)this.callback2('zz')
-  }
-  attached() {
-    //console.log('attached', this)
-    //this.doit('xx');
-
-  }
-  dozz(e){
-    //console.log('dooz', e, this)
-    this.doit('dd')
   }
 }

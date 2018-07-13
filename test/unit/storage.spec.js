@@ -6,9 +6,9 @@ describe('Storage', () => {
       items: [
         {id: 1, name: 'Bill Gates',      power: false, rich: true,  genius: true},
         {id: 2, name: 'Bruce Willis',    power: true,  rich: true,  genius: false},
-        {id: 3, name: 'Albert Einstein', power: true,  rich: false, genius: true}
+        {id: 3, name: 'Albert Einstein', power: true,  rich: false, genius: true},
       ],
-      count: 3
+      count: 3,
     }));
   });
 

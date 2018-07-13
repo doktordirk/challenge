@@ -30,7 +30,7 @@ export class ActionConfirm {
   static $view = {
     template:
       `<template>
-        <span click-enter.delegate="confirmHandle=handle" 
+        <span click-enter.delegate="confirmHandle=handle"
               show.bind="confirmHandle !== handle" 
               class="confirm-action">
           <slot name="action">Action</slot>

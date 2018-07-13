@@ -5,7 +5,7 @@ import {Person} from '../../src/entities/person';
 const TestSchema = [
   {name: 'id'},
   {name: 'name', required: true},
-  {name: 'power', default: false}
+  {name: 'power', default: false},
 ];
 
 describe('Person', () => {
