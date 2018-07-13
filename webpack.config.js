@@ -43,7 +43,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js',
   },
   performance: { hints: false },
-  optimization: {
+  optimization: production ? {
     splitChunks: {
       cacheGroups: {
         commons: {
@@ -53,7 +53,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         },
       },
     },
-  },
+  } : {},
   devServer: {
     contentBase: outDir,
     // serve index.html for all 404 (required for push-state)
