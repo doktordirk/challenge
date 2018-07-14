@@ -11,5 +11,5 @@ export function init(cb, next) {
       .plugin(PLATFORM.moduleName('aurelia-validation'));
 
     return aurelia.start().then(cb);
-  }).then(next).catch(next);
+  });
 }
