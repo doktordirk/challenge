@@ -1,0 +1,33 @@
+{
+  "action": {
+    "add": "Zufügen",
+    "delete": "Entfernen",
+    "sort": "Sortieren"
+  },
+  "confirm": {
+    "delete": "Sicher?",
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "attribute": {
+    "id":"ID",
+    "name":"Name",
+    "total": "Alle Personen",
+    "rich": "Reiche",
+    "power": "Superpower",
+    "genius": "Genies"
+  },
+  "title": {
+    "main": "Personenmanagement",
+    "add-person": "Neue Person zufügen",
+    "table": "Personentabelle",
+    "sidebar": "Statistiken",
+    "filters": "Filter",
+    "language": "Switch language"
+  },
+  "info": {
+    "no-person-selected": "Keine Person ausgewählt. Bitte eine Filter unten auswählen.",
+    "no-person-added": "Bitte Personen zufügen.",
+    "required": {"name": "Name erforderlich"}
+  }  
+}

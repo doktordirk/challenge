@@ -4,6 +4,7 @@ const ResourceHintWebpackPlugin = require('resource-hints-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
@@ -95,7 +96,11 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       { test: /\.js$/i, loader: 'babel-loader', exclude: nodeModulesDir,
         options: coverage ? { sourceMap: 'inline', plugins: [ 'istanbul' ] } : {},
       },
-      { test: /\.json$/i, loader: 'json-loader' },
+      {
+        type: 'javascript/auto',
+        test: /\.json$/,
+        use: ['json-loader'],
+      },
       // use Bluebird as the global Promise implementation:
       { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
       // embed small images and fonts as Data Urls and larger ones as files:
@@ -115,6 +120,10 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     }),
     new ModuleDependenciesPlugin({
       'aurelia-testing': [ './compile-spy', './view-spy' ],
+      'aurelia-i18n': [
+        { name: 'resources/locale/en/translation.json', chunk: 'lang-en' },
+        { name: 'resources/locale/de/translation.json', chunk: 'lang-de' },
+      ],
     }),
     ...when(extractCss, new MiniCssExtractPlugin({
       filename: production ? '[contenthash].css' : '[id].css',
@@ -138,7 +147,18 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         // available in index.ejs //
         title, server, baseUrl,
       },
-      prefetch: ['resources/locale/en/translation.json'],
+    }),
+    new PreloadWebpackPlugin({
+      rel: 'prefetch',
+      as(entry) {
+        if (/\.css$/.test(entry)) return 'style';
+        if (/\.woff$/.test(entry)) return 'font';
+        if (/\.woff2$/.test(entry)) return 'font';
+        if (/\.png$/.test(entry)) return 'image';
+        return 'script';
+      },
+      include: 'allAssets',
+      fileWhitelist: [/\.woff2/, /lang-en/],
     }),
     new ResourceHintWebpackPlugin(),
     ...when(production, new OptimizeCssAssetsPlugin({
@@ -148,7 +168,6 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       },
     })),
     new CopyWebpackPlugin([
-      {from: 'src/resources/locale/', to: 'resources/locale/'},
     ]),
     ...when(production, new CompressionPlugin()),
     ...when(production, new CopyWebpackPlugin([

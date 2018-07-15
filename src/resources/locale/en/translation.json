@@ -22,7 +22,8 @@
     "add-person": "Add new person",
     "table": "Person table",
     "sidebar": "Statistics",
-    "filters": "Filters"
+    "filters": "Filters",
+    "language": "Switch language"
   },
   "info": {
     "no-person-selected": "No person selected. Please select a filter bellow.",

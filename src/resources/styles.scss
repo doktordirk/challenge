@@ -28,6 +28,12 @@ header {
   h1 {
     text-align: center
   }
+  .locale-switcher {
+    float: right;
+    .active {
+      color: black;
+    }
+  }
 }
 
 nav.router {

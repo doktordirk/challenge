@@ -2,7 +2,12 @@
   <require from="./components/add-person"></require>
   <require from='./components/statistics'></require>
 
+
   <header>
+    <div class="locale-switcher" t="[aria-label]title.language">
+      <a href='#' class.bind="locale === 'en' ? 'active' :''" click.delegate="setLocale('en')">English</a>
+      <a href='#' class.bind="locale === 'de' ? 'active' :''" click.delegate="setLocale('de')">Deutsch</a>
+    </div>
     <h1  t="title.main">Person management</h1>
   </header>
   <main>
